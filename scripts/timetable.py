@@ -1,45 +1,57 @@
-timeTable=[{"Monday":[]},{"Tuesday":[]},{"Wednesday":[]},{"Thursday":[]},{"Friday":[]},{"Saturday":[]}]
+from prompt_toolkit import prompt
+from prompt_toolkit.completion import WordCompleter
+import pickle
 
-
-def inputTimetable():
-    # A function to take the timetable as input
-    isExit="n"
-    days=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-    for day in days:
-        print("Enter the Course Code, Timing, Meeting Link Mode following for {} in the following format 'Timing, Course Code, Meet link mode':".format(day))
-        while isExit == "n":
-            inputString=input()
-            convertToTimeTable(inputString,day)
-            isExit=input("Are you done (y/n)?")
-        isExit="n"
-    print(timeTable)
-        
-
-def convertToTimeTable(inputString,day):
-    # a function to convert the input string data into the required format and input into the timetable
-    timeTableFields=inputString.split(",")
-    timing = timeTableFields[0]
-    courseCode = timeTableFields[1]
-    meetLinkMode = timeTableFields[2]
-    detailsDict={}
-    detailsDict["timing"]=timing.strip()
-    detailsDict["courseCode"]=courseCode.strip()
-    detailsDict["meetLinkMode"]=meetLinkMode.strip()
-    if day == "Monday":
-        dayEntry=timeTable[0].get(day)
-    elif day == "Tuesday":
-        dayEntry=timeTable[1].get(day)
-    elif day == "Wednesday":
-        dayEntry=timeTable[2].get(day)
-    elif day == "Thursday":
-        dayEntry=timeTable[3].get(day)
-    elif day == "Friday":
-        dayEntry=timeTable[4].get(day)
-    elif day == "Saturday":
-        dayEntry=timeTable[5].get(day)
-    dayEntry.append(detailsDict)
-
+times=['08.45 am','09.45 am','11.00 am','12.00 pm','01.00 pm','02.00 pm','03.15 pm','04.15 pm']
+monday=[]
+tuesday=[]
+wednesday=[]
+thursday=[]
+friday=[]
+saturday=[]
+classes=[]
+def inputTimeTable(day):
+    char='y'
+    while(char == 'y'):
+        coursecode = input("Enter the course code ")
+        timing = prompt("Enter the time ",completer=WordCompleter(times))
+        temp=(coursecode,timing)
+        classes.append(temp)
+        char = input("Do you want to input another course?(y/n) ")
 
 if __name__ == "__main__":
-    # program flow starts here
-    inputTimetable()
+    # initializing days
+    try:
+        print("Enter the courses for Monday ")
+        inputTimeTable("monday")
+        print("Enter the courses for Tuesday ")
+        inputTimeTable("tuesday")
+        print("Enter the courses for Wednesday ")
+        inputTimeTable("wednesday")
+        print("Enter the courses for Thursday ")
+        inputTimeTable("thursday")
+        print("Enter the courses for Friday ")
+        inputTimeTable("friday")
+        print("Enter the courses for Saturday ")
+        inputTimeTable("saturday")
+    except:
+        print("Error Occur")
+
+    # saving timetable
+    print("Attempting to save the timetable... ")
+    try:
+        with open("../timetables/monday.pkl","w") as md:
+            pickle.dump(monday,md)
+        with open("../timetables/tuesday.pkl","w") as td:
+            pickle.dump(tuesday,td)
+        with open("../timetables/wednesday.pkl","w") as wd:
+            pickle.dump(wednesday,wd)
+        with open("../timetables/thursday.pkl","w") as thd:
+            pickle.dump(thursday,thd)
+        with open("../timetables/friday.pkl","w") as fd:
+            pickle.dump(friday,fd)
+        with open("../timetables/saturday.pkl","w") as sd:
+            pickle.dump(saturday,sd)
+        print("Timetable Saved Succesfully! ")
+    except:
+        print("Failed to save the timetable! Check Permissions ")
