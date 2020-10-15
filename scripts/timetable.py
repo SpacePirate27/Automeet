@@ -34,7 +34,7 @@ if __name__ == "__main__":
                 temp.append((cc,time))
                 flag = input('Do you want to add another course? (y/n)')
             #attempting to save
-            print('Saving',i,'\b','s timetable')
+            print('Saving',i,'\b'+'s timetable')
             try:
                 file_object = open(dir,'wb')
                 pickle.dump(temp,file_object)
@@ -42,8 +42,9 @@ if __name__ == "__main__":
                 print('Successfully saved '+i)
             except:
                 print('Failed to save')
+    
     dirc = os.getcwd()+'\\timetables\\'+'courses'+'.pkl'
-    if os.path.isfile(dirc) is False:
+    if courses is not []:    
         file_object = open(dirc,'wb')
         pickle.dump(courses,file_object)
         file_object.close()
