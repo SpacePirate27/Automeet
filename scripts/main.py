@@ -26,12 +26,6 @@ def get_next_class(ctime,todlist,tomlist): #The function needs to be filled to a
 def calculate_seconds(timea,timeb): #The function needs to be filled to return the difference between timea and timeb in SECONDS (format of timea and timeb is same as above in STRING)
     return timeb - timea
 
-def get_the_link(next_class):
-    print('test')
-    return 0
-
-def web_page_opener(class_link):
-    print('test')
 
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 
