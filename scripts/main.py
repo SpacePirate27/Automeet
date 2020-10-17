@@ -10,13 +10,16 @@
 
 
 from datetime import date
+from datetime import timedelta
 import pickle
 import datetime
 import os
 import time
+
+from typing_extensions import final
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 
-def compare_times(timeone,timetwo): #the function needs to be filled to accept two strings in the format "04:40 PM" and compare them,return 0 if timeone is greater and return 1 if timetwo is greater
+def compare_times(timeone,timetwo): #the function return 0 if timeone is greater and return 1 if timetwo is greater
     t1 = timeone.split(' ')
     t2 = timetwo.split(' ')
     if(t1[1]!=t2[1]):
@@ -41,7 +44,7 @@ def compare_times(timeone,timetwo): #the function needs to be filled to accept t
             else:
                 return 1
 
-def get_next_class(ctime,todlist,x,tomlist,y,dayafterlist,z): #The function needs to be filled to accept the current time, a list of todays classes and a list of tomorrows classes, and to return a tuple (as shown in the example) that is the next class, FORMAT: ctime-"05:40 PM"(str), todlist/tomlist-[[('cse308', '08.45 am'),monday] ('cse301', '11.00 am')]
+def get_next_class(ctime,todlist,x,tomlist,y,dayafterlist,z): #The function obtains the next class time and day
 
     for i in todlist:
         if compare_times(ctime,i[1]) == 1:
@@ -51,13 +54,35 @@ def get_next_class(ctime,todlist,x,tomlist,y,dayafterlist,z): #The function need
     else:
         return [dayafterlist[0],2]
 
+def twelve_to_24(twelvetime): #05:45 PM
+    temp = twelvetime.split(' ')
+    if temp[1] == 'AM':
+        fin = temp[0]+':00'
+    else:
+        hr = int(temp[0].split(':')[0])
+        hr += 12
+        min = int(temp[0].split(':')[1])
+        fin = str(hr)+':'+str(min)+':'+'00'
+    return fin
 
-def calculate_seconds(cxtime,nxclass): #The function needs to be filled to return the difference between timea and timeb in SECONDS (format of timea and timeb is same as above in STRING), 
+def calculate_seconds(cxtime,nxclass): #The function returns the difference between timea and timeb in SECONDS
+    final_time = 0
     if nxclass[1] == 0:
-        
+        final_time = 0
+    elif nxclass[1] == 1:
+        final_time = 86400
+    else:
+        final_time = 1,72,800
 
+    timea = twelve_to_24(cxtime)
+    timeb = twelve_to_24(nxclass[0][1])
 
+    fmt = '%H:%M:%S'
+    tdelta = datetime.datetime.strptime(timeb, fmt) - datetime.strptime(timea, fmt)
+    seconds = int(tdelta.total_seconds())
+    final_time += seconds
 
+    return final_time
 
 
 while(1):
