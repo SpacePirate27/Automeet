@@ -5,9 +5,12 @@ from prompt_toolkit.completion import WordCompleter
 import pickle
 import os.path
 from operator import itemgetter
+import getpass
 
 times=['08:45 AM','09:45 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:15 PM','04:15 PM']
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
+
+os.chdir(os.getcwd().split('\\scripts')[0])
 
 def fun(course):
     timing=course[1]
@@ -78,13 +81,6 @@ if __name__ == "__main__":
                     print('Error occured')
                 temp.append((cc,time))
                 flag = input('Do you want to add another course? (y/n)')
-            ############################################################################################################
-            #                ADD A CODE HERE THAT FORMATS THE LIST TEMP, IN ORDER OF THE CLASSES,                      #
-            #     THE LIST WILL HAVE TUPLES IN IT IN THE DESIGN OF [('cse308', '08.45 am'), ('cse301', '11.00 am')]    #
-            #                       COMPARE THE TIMES OF EACH TUPLE[1] AND SORT THEM                                   #
-            #       NOTE THE AM AND PM, SO SORT THEM SEPARATELY, MAINTAINGING THEIR OWN ORDER OF FIRST AM THEN PM      #
-            #              ALSO NOTE THIS FUNCTION HAS TO BE IN THE FOR LOOP - OUTSIDE THE WHILE LOOP                  #
-            ############################################################################################################
             final_tt = []
             if len(temp) != 0:
                 final_tt = sort_the_timetable(temp)
@@ -105,4 +101,31 @@ if __name__ == "__main__":
         file_object = open(dirc,'wb')
         pickle.dump(courses,file_object)
         file_object.close()
+    
+
+
+    dirc = os.getcwd()+'\\user_mail_creds\\'+'user_name'+'.pkl'
+    if os.path.isfile(dirc) is False:
+        print('Before proceeding, ensure that less secure apps is allowed on your SASTRA account by clicking on the link below, \n\n https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiB2oXrk7zsAhXGZSsKHc6pAD4QFjAAegQIAxAC&url=https%3A%2F%2Fmyaccount.google.com%2Flesssecureapps&usg=AOvVaw3FH1O5TwzTEB9B9yhEUsI7 \n\n then press enter')
+        fake = input()
+        
+        email = input('Enter the SASTRA Email ID')
+        print('Enter the SASTRA Password (Your password will be stored locally on your device and will not be shared anywhere else!!!)')
+        try: 
+            p = getpass.getpass() 
+        except Exception as error: 
+            print('ERROR', error) 
+
+        dirc = os.getcwd()+'\\user_mail_creds\\'+'user_name'+'.pkl'
+        fo = open(dirc,'wb')
+        pickle.dump(email,fo)
+        fo.close
+
+        dirc = os.getcwd()+'\\user_mail_creds\\'+'password'+'.pkl'
+        fo = open(dirc,'wb')
+        pickle.dump(p,fo)
+        fo.close
+    
+
+
 
