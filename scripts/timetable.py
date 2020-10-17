@@ -35,12 +35,13 @@ def sort_the_timetable(tt_list): # function to sort the timetable based on the t
     #print('sorted pms',t2)
     # t2 has 12pm courses at the last, so we're gonna fix that below
     final_t2=[]
-    if t2[len(t2)-1][1].startswith('12'):
-        final_t2.append(t2[len(t2)-1])
-        for i in range(len(t2)-1):
-            final_t2.append(t2[i])
-    final_t2=t2
-    #print('super sorted pms',final_t2)
+    if len(t2) != 0:
+        if t2[len(t2)-1][1].startswith('12'):
+            final_t2.append(t2[len(t2)-1])
+            for i in range(len(t2)-1):
+                final_t2.append(t2[i])
+        final_t2=t2
+    #print('super sorted pms',final_t2)         
     # append the sorted courses am first and pm last to tt and return it
     for course in t1:
         tt.append(course)
@@ -84,8 +85,11 @@ if __name__ == "__main__":
             #       NOTE THE AM AND PM, SO SORT THEM SEPARATELY, MAINTAINGING THEIR OWN ORDER OF FIRST AM THEN PM      #
             #              ALSO NOTE THIS FUNCTION HAS TO BE IN THE FOR LOOP - OUTSIDE THE WHILE LOOP                  #
             ############################################################################################################
-            final_tt = sort_the_timetable(temp)
-
+            final_tt = []
+            if len(temp) != 0:
+                final_tt = sort_the_timetable(temp)
+            print(final_tt)
+            
             #attempting to save
             print('Saving',i,'\b'+'s timetable')
             try:
