@@ -19,13 +19,19 @@ def compare_times(timeone,timetwo): #the function needs to be filled to accept t
     print('test')
     return 0
 
-def get_next_class(ctime,todlist,tomlist): #The function needds to be filled to accept the current time, a list of todays classes and a list of tomorrows classes, and to return a tuple (as shown in the example) that is the next class, FORMAT: ctime-"05:40 PM"(str), todlist/tomlist-[('cse308', '08.45 am'), ('cse301', '11.00 am')]
+def get_next_class(ctime,todlist,tomlist): #The function needs to be filled to accept the current time, a list of todays classes and a list of tomorrows classes, and to return a tuple (as shown in the example) that is the next class, FORMAT: ctime-"05:40 PM"(str), todlist/tomlist-[('cse308', '08.45 am'), ('cse301', '11.00 am')]
 
     return todlist[0]
 
 def calculate_seconds(timea,timeb): #The function needs to be filled to return the difference between timea and timeb in SECONDS (format of timea and timeb is same as above in STRING)
     return timeb - timea
 
+def get_the_link(next_class):
+    print('test')
+    return 0
+
+def web_page_opener(class_link):
+    print('test')
 
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 
@@ -37,6 +43,7 @@ while(1):
 
     file_handler = open(os.getcwd()+'\\timetables\\'+today+'.pkl',"rb")
     today_classes_list = pickle.load(file_handler)
+    file_handler.close()
     file_handler = open(os.getcwd()+'\\timetables\\'+tomorrow+'.pkl',"rb")
     tomorrow_classes_list = pickle.load(file_handler)
     file_handler.close()

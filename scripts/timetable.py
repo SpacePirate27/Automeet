@@ -4,9 +4,49 @@ from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 import pickle
 import os.path
+from operator import itemgetter
 
 times=['08:45 AM','09:45 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:15 PM','04:15 PM']
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
+
+def fun(course):
+    timing=course[1]
+    temp=timing.split(" ")
+    temp2=temp[0].split(":")
+    hr=temp2[0]
+    return int(hr)
+
+def sort_the_timetable(tt_list): # function to sort the timetable based on the timings of the class
+    tt=[]
+    ams=[] #contains all the am courses in the format ('<course-name>','<time>')
+    pms=[] #contains all the pm courses in the format ('<course-name>','<time>')
+    for course in tt_list:
+        timing=course[1]
+        temp1=timing.split(" ")
+        if temp1[1] == 'AM':
+            ams.append(course) #splitting the times based on am/pm
+        elif temp1[1] == 'PM':
+            pms.append(course)
+    #print('ams',ams)
+    #print('pms',pms)
+    t1=sorted(ams,key=fun)
+    t2=sorted(pms,key=fun)
+    #print('sorted ams',t1)
+    #print('sorted pms',t2)
+    # t2 has 12pm courses at the last, so we're gonna fix that below
+    final_t2=[]
+    if t2[len(t2)-1][1].startswith('12'):
+        final_t2.append(t2[len(t2)-1])
+        for i in range(len(t2)-1):
+            final_t2.append(t2[i])
+    final_t2=t2
+    #print('super sorted pms',final_t2)
+    # append the sorted courses am first and pm last to tt and return it
+    for course in t1:
+        tt.append(course)
+    for course in final_t2:
+        tt.append(course)
+    return tt
 
 if __name__ == "__main__":
     courses = []
@@ -44,12 +84,13 @@ if __name__ == "__main__":
             #       NOTE THE AM AND PM, SO SORT THEM SEPARATELY, MAINTAINGING THEIR OWN ORDER OF FIRST AM THEN PM      #
             #              ALSO NOTE THIS FUNCTION HAS TO BE IN THE FOR LOOP - OUTSIDE THE WHILE LOOP                  #
             ############################################################################################################
+            final_tt = sort_the_timetable(temp)
 
             #attempting to save
             print('Saving',i,'\b'+'s timetable')
             try:
                 file_object = open(dir,'wb')
-                pickle.dump(temp,file_object)
+                pickle.dump(final_tt,file_object)
                 file_object.close()
                 print('Successfully saved '+i)
             except:
