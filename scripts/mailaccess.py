@@ -4,56 +4,53 @@ from email.header import decode_header
 import webbrowser
 import os
 import pickle
+from scripts.linkScraper import linkscraper_runner
 
-dirc = os.getcwd()+'\\user_mail_creds\\'+'user_name'+'.pkl'
+def get_the_link(nextclass,no_of_mails,rerunner=False):
 
-usrname = open(os.getcwd()+'\\user_mail_creds\\'+'user_name'+'.pkl',"rb")
-username = pickle.load(usrname)
-passw = open(os.getcwd()+'\\user_mail_creds\\'+'password'+'.pkl',"rb")
-password = pickle.load(passw)
-usrname.close()
-passw.close()
+    dirc = os.getcwd()+'\\user_mail_creds\\'+'user_name'+'.pkl'
 
-imap = imaplib.IMAP4_SSL("imap.gmail.com")
-imap.login(username, password)
-status, messages = imap.select("INBOX")
-messages = int(messages[0])
-N = 5
+    usrname = open(os.getcwd()+'\\user_mail_creds\\'+'user_name'+'.pkl',"rb")
+    username = pickle.load(usrname)
+    passw = open(os.getcwd()+'\\user_mail_creds\\'+'password'+'.pkl',"rb")
+    password = pickle.load(passw)
+    usrname.close()
+    passw.close()
 
-list_of_mail = []
+    imap = imaplib.IMAP4_SSL("imap.gmail.com")
+    imap.login(username, password)
+    status, messages = imap.select("INBOX")
+    messages = int(messages[0])
+    N = no_of_mails
 
-for i in range(messages, messages-N, -1):
-    res, msg = imap.fetch(str(i), "(RFC822)")
-    for response in msg:
-        if isinstance(response, tuple):
-            msg = email.message_from_bytes(response[1])
-            if msg.is_multipart():
-                # iterate over email parts
-                for part in msg.walk():
-                    # extract content type of email
-                    content_type = part.get_content_type()
-                    content_disposition = str(part.get("Content-Disposition"))
-                    try:
-                        # get the email body
-                        body = part.get_payload(decode=True).decode()
-                    except:
-                        pass
+    list_of_mail = []
+
+    for i in range(messages, messages-N, -1):
+        res, msg = imap.fetch(str(i), "(RFC822)")
+        body = ''
+        for response in msg:
+            if isinstance(response, tuple):
+                msg = email.message_from_bytes(response[1])
+                if msg.is_multipart():
+                    for part in msg.walk():
+                        content_type = part.get_content_type()
+                        content_disposition = str(part.get("Content-Disposition"))
+                        try:
+                            body = part.get_payload(decode=True).decode()
+                        except:
+                            pass
+                        if content_type == "text/plain":
+                            list_of_mail.append(body)
+                else:
+                    content_type = msg.get_content_type()
+                    body = msg.get_payload(decode=True).decode()
                     if content_type == "text/plain":
-                        # print text/plain emails and skip attachments
                         list_of_mail.append(body)
-            else:
-                # extract content type of email
-                content_type = msg.get_content_type()
-                # get the email body
-                body = msg.get_payload(decode=True).decode()
-                if content_type == "text/plain":
-                    # print only text email parts
-                    list_of_mail.append(body)
-imap.close()
-imap.logout()
+    imap.close()
+    imap.logout()
 
-for i in list_of_mail:
-    print(i)
-    print('\n\n')
-    print('*********************')
-    print('\n\n')
+    if rerunner == False:
+        final_link = linkscraper_runner(list_of_mail,nextclass)
+        return final_link
+    else:
+        return list_of_mail
