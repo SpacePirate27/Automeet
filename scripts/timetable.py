@@ -131,8 +131,9 @@ if __name__ == "__main__":
         fo = open(dirc,'wb')
         pickle.dump(p,fo)
         fo.close
-
-        profile_creator()
+        webdri_dir=os.getcwd()+'\\web_drivers'
+        if os.path.isdir(webdri_dir) is True:
+           profile_creator()
         
     
 
