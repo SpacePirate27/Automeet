@@ -14,6 +14,8 @@ from datetime import timedelta
 import pickle
 import datetime
 import os
+from scripts.webPageHandler import web_page_opener
+from scripts.mailaccess import get_the_link
 import time
 
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
@@ -48,7 +50,7 @@ def get_next_class(ctime,todlist,x,tomlist,y,dayafterlist,z): #The function obta
     for i in todlist:
         if compare_times(ctime,i[1]) == 1:
             return [i,0]
-    if tomlist is not []:
+    if len(tomlist) != 0:
         return [tomlist[0],1]
     else:
         return [dayafterlist[0],2]
@@ -108,7 +110,7 @@ while(1):
     next_class = get_next_class(current_time,today_classes_list,today,tomorrow_classes_list,tomorrow,dayafter_classes_list,dayaftertom)
     remaining_time = calculate_seconds(current_time,next_class)
 
-    time.sleep(remaining_time-180) #sleeps the program until 3 minutes before the upcoming class
+    time.sleep(remaining_time+180) #sleeps the program until 3 min after before the upcoming class
     class_link = get_the_link(next_class) #this function should be in the mailaccess.py file and should return either the link of the google meet or should automatically fall back to to the fallbackprotocol and find the link and return it 
 
     web_page_opener(class_link) #this function should be present in the webpagehandler python file and should accept the link and open it in the current profile, NOTE: webpageopener function will also close the webpage upon the class getting over
