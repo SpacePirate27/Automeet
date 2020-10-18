@@ -13,7 +13,6 @@ from datetime import date
 from datetime import timedelta
 import datetime
 import pickle
-import datetime
 import os
 import timetable as tt
 import webPageHandler as wph
