@@ -4,7 +4,9 @@
 # notif for loss of internet
 # notif for finding the apropriate link
 # notif for inability to find the link on mail
+
 from pynotifier import Notification
+
 notif_title = "Automeet Notification"
 notif_desc = ["Entered the class successfully",
         "Exited the class successfully",
