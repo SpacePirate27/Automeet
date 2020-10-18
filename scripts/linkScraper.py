@@ -4,7 +4,7 @@
 # call webPageHandler
 
 
-from scripts.mailaccess import get_the_link
+import mailaccess as ma
 
 def linkscraper_runner(mailist,classinfo):
     classcode = classinfo[0][0]
@@ -20,7 +20,7 @@ def linkscraper_runner(mailist,classinfo):
             if 'meet.google.com' in i.split('/'):
                 first_filter.append(i)
         if len(first_filter) == 0: #if the acquired mails has no meet.google.com links, get more
-            mailist = get_the_link(classinfo,first_value + 3,rerunner=True)
+            mailist = ma.get_the_link(classinfo,first_value + 3,rerunner=True)
             first_value += 3
         
     second_filter = [] #this filter tries to check if the subject code or the time of the class is mentioned

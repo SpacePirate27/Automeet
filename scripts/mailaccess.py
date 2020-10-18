@@ -4,7 +4,7 @@ from email.header import decode_header
 import webbrowser
 import os
 import pickle
-from scripts.linkScraper import linkscraper_runner
+import linkScraper as lis
 
 def get_the_link(nextclass,no_of_mails,rerunner=False):
 
@@ -50,7 +50,7 @@ def get_the_link(nextclass,no_of_mails,rerunner=False):
     imap.logout()
 
     if rerunner == False:
-        final_link = linkscraper_runner(list_of_mail,nextclass)
+        final_link = lis.linkscraper_runner(list_of_mail,nextclass)
         return final_link
     else:
         return list_of_mail

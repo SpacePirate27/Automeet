@@ -13,12 +13,6 @@ import getpass
 times=['08:45 AM','09:45 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:15 PM','04:15 PM']
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 
-os.chdir(os.getcwd().split('\\scripts')[0])
-if not os.path.isdir('timetables'):
-    os.makedirs('timetables')
-if not os.path.isdir('user_mail_creds'):
-    os.makedirs('user_mail_creds')
-
 def profile_creator(): #the function receives the meet link, the function first needs perform the above mentioned functions and return nothing
     drivers = os.getcwd().split('\\scripts')[0]+'\\web_drivers'
     temp = 'user-data-dir='+drivers+'\myprofile'
@@ -68,7 +62,14 @@ def sort_the_timetable(tt_list): # function to sort the timetable based on the t
         tt.append(course)
     return tt
 
-if __name__ == "__main__":
+def tt_runner():
+
+    os.chdir(os.getcwd().split('\\scripts')[0])
+    if not os.path.isdir('timetables'):
+        os.makedirs('timetables')
+    if not os.path.isdir('user_mail_creds'):
+        os.makedirs('user_mail_creds')
+        
     courses = []
     if os.path.isfile(os.getcwd()+'\\timetables\\'+'courses'+'.pkl') is True:
         inp_course = open(os.getcwd()+'\\timetables\\'+'courses'+'.pkl',"rb")

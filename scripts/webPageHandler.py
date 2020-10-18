@@ -21,33 +21,27 @@ def web_page_opener(link):
     meetdriver.get(link)
 
     time.sleep(5)
+
     mic_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[1]/div/div[4]/div[1]/div/div/div').click()
     vid_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[1]/div/div[4]/div[2]/div/div').click()
+
+    time.sleep(1)
+
     join_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div[1]').click()
-    time.sleep(5)
+
+    time.sleep(10)
+
     people_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div[1]/div/div[5]/div[3]/div[6]/div[3]/div/div[2]/div[1]').click()
-    time.sleep(2)
-    nos = 3
-    while nos > 2:
-        time.sleep(10)
-        nos = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div[1]/div/div[5]/div[3]/div[3]/div/div[2]/div[2]/div[1]/div[1]/span/div/span[2]').text
+
+    time.sleep(5)
+    nos = 20
+    while nos > 15:
+        time.sleep(15)
+        nos = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div[1]/div/div[5]/div[3]/div[3]/div/div[2]/div[2]/div[1]/div[1]').text        
         nos = nos.replace('(','')
         nos = nos.replace(')','')
+        nos = nos.replace('People','')
+        nos = nos.replace('\n','')
         nos = int(nos)
-web_page_opener('https://meet.google.com/nis-gwrr-waf')
     
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-profile_creator ('mail.google.com')
+    meetdriver.close()

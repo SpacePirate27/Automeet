@@ -11,11 +11,13 @@
 
 from datetime import date
 from datetime import timedelta
+import datetime
 import pickle
 import datetime
 import os
-from scripts.webPageHandler import web_page_opener
-from scripts.mailaccess import get_the_link
+import timetable as tt
+import webPageHandler as wph
+import mailaccess as ma
 import time
 
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
@@ -79,41 +81,48 @@ def calculate_seconds(cxtime,nxclass): #The function returns the difference betw
     timeb = twelve_to_24(nxclass[0][1])
 
     fmt = '%H:%M:%S'
-    tdelta = datetime.datetime.strptime(timeb, fmt) - datetime.strptime(timea, fmt)
+    tdelta = datetime.datetime.strptime(timeb, fmt) - datetime.datetime.strptime(timea, fmt)
     seconds = int(tdelta.total_seconds())
     final_time += seconds
 
     return final_time
 
+if __name__ == '__main__':
+    while(1):
+        tt.tt_runner()
 
-while(1):
-    today = days[datetime.date.today().weekday()] #days gets the value(string) of the current day
-    tom = datetime.date.today() + datetime.timedelta(days=1)
-    datom = datetime.date.today() + datetime.timedelta(days=2)
-    tomorrow = days[tom.weekday()]
-    dayaftertom = days[datom.weekday()]
-    print(today,tomorrow,dayaftertom)
+        today = days[datetime.date.today().weekday()] #days gets the value(string) of the current day
+        tom = datetime.date.today() + datetime.timedelta(days=1)
+        datom = datetime.date.today() + datetime.timedelta(days=2)
+        tomorrow = days[tom.weekday()]
+        dayaftertom = days[datom.weekday()]
+        print(today,tomorrow,dayaftertom)
 
-    file_handler = open(os.getcwd()+'\\timetables\\'+today+'.pkl',"rb")
-    today_classes_list = pickle.load(file_handler)
-    file_handler.close()
+        file_handler = open(os.getcwd()+'\\timetables\\'+today+'.pkl',"rb")
+        today_classes_list = pickle.load(file_handler)
+        file_handler.close()
 
-    file_handler = open(os.getcwd()+'\\timetables\\'+tomorrow+'.pkl',"rb")
-    tomorrow_classes_list = pickle.load(file_handler)
-    file_handler.close()
+        file_handler = open(os.getcwd()+'\\timetables\\'+tomorrow+'.pkl',"rb")
+        tomorrow_classes_list = pickle.load(file_handler)
+        file_handler.close()
 
-    file_handler = open(os.getcwd()+'\\timetables\\'+dayaftertom+'.pkl',"rb")
-    dayafter_classes_list = pickle.load(file_handler)
-    file_handler.close()
+        file_handler = open(os.getcwd()+'\\timetables\\'+dayaftertom+'.pkl',"rb")
+        dayafter_classes_list = pickle.load(file_handler)
+        file_handler.close()
 
-    current_time = datetime.datetime.now().time().strftime("%I:%M %p")
-    next_class = get_next_class(current_time,today_classes_list,today,tomorrow_classes_list,tomorrow,dayafter_classes_list,dayaftertom)
-    remaining_time = calculate_seconds(current_time,next_class)
+        current_time = datetime.datetime.now().time().strftime("%I:%M %p")
+        next_class = get_next_class(current_time,today_classes_list,today,tomorrow_classes_list,tomorrow,dayafter_classes_list,dayaftertom)
+        remaining_time = calculate_seconds(current_time,next_class)
 
-    time.sleep(remaining_time+180) #sleeps the program until 3 min after before the upcoming class
-    class_link = get_the_link(next_class) #this function should be in the mailaccess.py file and should return either the link of the google meet or should automatically fall back to to the fallbackprotocol and find the link and return it 
+        print('next class ',next_class[0][0], 'at', next_class[0][1], 'in', remaining_time)
 
-    web_page_opener(class_link) #this function should be present in the webpagehandler python file and should accept the link and open it in the current profile, NOTE: webpageopener function will also close the webpage upon the class getting over
+        #time.sleep(remaining_time+180) #sleeps the program until 3 min after before the upcoming class
+
+        class_link = ma.get_the_link(next_class,3) #this function should be in the mailaccess.py file and should return either the link of the google meet or should automatically fall back to to the fallbackprotocol and find the link and return it 
+
+        print('\n\n','Class Link is ',class_link)
+
+        wph.web_page_opener(class_link) #this function should be present in the webpagehandler python file and should accept the link and open it in the current profile, NOTE: webpageopener function will also close the webpage upon the class getting over
 
 
 
