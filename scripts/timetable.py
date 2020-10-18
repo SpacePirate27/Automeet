@@ -11,6 +11,10 @@ times=['08:45 AM','09:45 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:15 
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 
 os.chdir(os.getcwd().split('\\scripts')[0])
+if not os.path.isdir('timetables'):
+    os.makedirs('timetables')
+if not os.path.isdir('user_mail_creds'):
+    os.makedirs('user_mail_creds')
 
 def fun(course):
     timing=course[1]
@@ -111,6 +115,7 @@ if __name__ == "__main__":
         
         email = input('Enter the SASTRA Email ID')
         print('Enter the SASTRA Password (Your password will be stored locally on your device and will not be shared anywhere else!!!)')
+        p = ''
         try: 
             p = getpass.getpass() 
         except Exception as error: 
