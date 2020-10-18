@@ -12,15 +12,6 @@ from selenium.webdriver.chrome.options import Options
 import time
 import os
 
-def profile_creator(): #the function receives the meet link, the function first needs perform the above mentioned functions and return nothing
-    drivers = os.getcwd().split('\\scripts')[0]+'\\web_drivers'
-    temp = 'user-data-dir='+drivers+'\myprofile'
-    to = Options()
-    to.add_argument(temp)
-    prf = webdriver.Chrome(executable_path=drivers+'\chromedriver.exe', chrome_options=to)
-    prf.get('http://mail.google.com')
-    
-
 def web_page_opener(link):
     drivers = os.getcwd().split('\\scripts')[0]+'\\web_drivers'
     temp = 'user-data-dir='+drivers+'\myprofile'
@@ -36,13 +27,14 @@ def web_page_opener(link):
     time.sleep(5)
     people_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div[1]/div/div[5]/div[3]/div[6]/div[3]/div/div[2]/div[1]').click()
     time.sleep(2)
-    nos = 20
-    while nos > 20:
+    nos = 3
+    while nos > 2:
+        time.sleep(10)
         nos = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div[1]/div/div[5]/div[3]/div[3]/div/div[2]/div[2]/div[1]/div[1]/span/div/span[2]').text
         nos = nos.replace('(','')
         nos = nos.replace(')','')
         nos = int(nos)
-web_page_opener('https://meet.google.com/ndy-qyum-jwh')
+web_page_opener('https://meet.google.com/nis-gwrr-waf')
     
 
     

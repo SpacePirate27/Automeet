@@ -1,9 +1,11 @@
 from os import path
 from os.path import isfile
-from scripts.webPageHandler import profile_creator
+
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 import pickle
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 import os.path
 from operator import itemgetter
 import getpass
@@ -17,6 +19,15 @@ if not os.path.isdir('timetables'):
 if not os.path.isdir('user_mail_creds'):
     os.makedirs('user_mail_creds')
 
+def profile_creator(): #the function receives the meet link, the function first needs perform the above mentioned functions and return nothing
+    drivers = os.getcwd().split('\\scripts')[0]+'\\web_drivers'
+    temp = 'user-data-dir='+drivers+'\myprofile'
+    to = Options()
+    to.add_argument(temp)
+    to.add_experimental_option('detach',True)
+    prf = webdriver.Chrome(executable_path=drivers+'\chromedriver.exe', chrome_options=to)
+    prf.get('http://mail.google.com')
+    
 def fun(course):
     timing=course[1]
     temp=timing.split(" ")
@@ -81,6 +92,9 @@ if __name__ == "__main__":
                         break
                     if cc not in courses:
                         courses.append(cc)
+                except:
+                    print('error')
+                try:
                     time = prompt('Enter the time: ',completer=WordCompleter(times))
                 except:
                     print('Error occured')
@@ -131,9 +145,12 @@ if __name__ == "__main__":
         fo = open(dirc,'wb')
         pickle.dump(p,fo)
         fo.close
-        webdri_dir=os.getcwd()+'\\web_drivers'
-        if os.path.isdir(webdri_dir) is True:
-           profile_creator()
+
+    webdri_dir=os.getcwd()+'\\web_drivers\\myprofile'
+    print(webdri_dir)
+
+    if os.path.isdir(webdri_dir) is False:
+        profile_creator()
         
     
 
