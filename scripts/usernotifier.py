@@ -12,6 +12,8 @@ notif_desc = ["Entered the class successfully",
         "Exited the class successfully",
         "Loss of internet",
         "Found the class link",
+        "Audio turned off",
+        "Video turned off",
         "Unable to find meeting link"]
 def sendNotif(param):
     Notification(
