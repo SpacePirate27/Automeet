@@ -1,5 +1,6 @@
 from os import path
 from os.path import isfile
+from scripts.webPageHandler import profile_creator
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 import pickle
@@ -130,6 +131,9 @@ if __name__ == "__main__":
         fo = open(dirc,'wb')
         pickle.dump(p,fo)
         fo.close
+
+        profile_creator()
+        
     
 
 
