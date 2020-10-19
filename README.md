@@ -1,8 +1,7 @@
 # Automeet
-A program that helps you to attend all the classes automatically.
-All you need is a laptop with internet logged in.
-Input your timetable and lo! Get 100% without attending the classes ;)
-
-To run main.py,
-1) Install Python
-2) Run " python -m pip install datetime prompt_toolkit selenium py-notifier win10toast " (without quotes)
+- This application has been developed to automate the task of attending the online class by students.
+- Usually, we either open the Google Classroom or check our mails for the meeting link and then login in with the appropriate account into the meeting link.
+- This application automated the above process for your convinience.
+- Install the application
+- Login in using your SASTRA mail id - (Turn on less secure apps)
+- And this application will keep running and attending the classes on your behalf
