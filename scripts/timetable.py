@@ -139,7 +139,6 @@ def tt_runner():
         passwo = ''
         try: 
             passwo = getpass.getpass()
-            print(passwo)
         except Exception as error: 
             print('ERROR', error) 
 
