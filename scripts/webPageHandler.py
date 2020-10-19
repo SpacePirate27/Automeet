@@ -5,6 +5,7 @@
 # join the link
 # close the meet when the number of participants fall below 10
 
+from time import sleep
 import usernotifier
 import selenium 
 from selenium import webdriver
@@ -13,26 +14,27 @@ import time
 import os
 import datetime
 
+
 def web_page_opener(link):
     drivers = os.getcwd().split('\\scripts')[0]+'\\web_drivers'
     temp = 'user-data-dir='+drivers+'\myprofile'
     to = Options()
     to.add_argument(temp)
-    to.add_argument("--mute-audio")
-
     time1 = datetime.datetime.now()
 
     meetdriver = webdriver.Chrome(executable_path=drivers+'\chromedriver.exe', chrome_options=to)
     meetdriver.get(link)
 
-    usernotifier.sendNotif(2)
-    # this notifies the user that the link has been found, remove if necessary
     time.sleep(5)
 
+
     mic_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[1]/div/div[4]/div[1]/div/div/div').click()
-    usernotifier.sendNotif(3)
     vid_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[1]/div/div[4]/div[2]/div/div').click()
+
+    time.sleep(2)
+    
     usernotifier.sendNotif(4)
+    
     time.sleep(3)
 
     join_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div[1]').click()
