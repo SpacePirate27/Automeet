@@ -8,18 +8,16 @@
 from pynotifier import Notification
 
 notif_title = "Automeet Notification"
-notif_desc = ["Entered the class successfully",
+notif_desc = ["Entered the class",
         "Exited the class successfully",
-        "Loss of internet",
         "Found the class link",
-        "Audio turned off",
-        "Video turned off",
-        "Unable to find meeting link"]
+        "Audio Muted",
+        "Video turned off"]
 def sendNotif(param):
     Notification(
 	title=notif_title,
     description=notif_desc[param],
-	icon_path='Paomedia-Small-N-Flat-Bell.ico',
+	icon_path='',
 	duration=5,
 	urgency=Notification.URGENCY_CRITICAL
 ).send()
