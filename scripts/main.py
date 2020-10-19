@@ -65,14 +65,17 @@ def get_next_class(ctime,todlist,x,tomlist,y,dayafterlist,z): #The function obta
 def twelve_to_24(twelvetime): #05:45 PM
     temp = twelvetime.split(' ')
     if temp[1] == 'AM':
-        fin = temp[0]+':00'
+        min = temp[0].split(':')[1]
+        hr = temp[0].split(':')[0]
+        if hr == '12':
+            hr = '00'
+        fin = hr + ':' + min + ':' + '00'
     else:
         hr = int(temp[0].split(':')[0])
-        hr += 12
-        if hr==24:
-            hr=00
-        min = int(temp[0].split(':')[1])
-        fin = str(hr)+':'+str(min)+':'+'00'
+        if hr != 12:
+            hr += 12
+        min = temp[0].split(':')[1]
+        fin = str(hr)+':'+min+':'+'00'
     return fin
 
 def calculate_seconds(cxtime,nxclass): #The function returns the difference between timea and timeb in SECONDS
