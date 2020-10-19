@@ -4,7 +4,7 @@ from email.header import decode_header
 import webbrowser
 import os
 import pickle
-import scripts.linkScraper as lis
+import linkScraper as lis
 
 def get_the_link(nextclass,no_of_mails,rerunner=False):
 

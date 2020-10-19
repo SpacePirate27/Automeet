@@ -14,10 +14,11 @@ from datetime import timedelta
 import datetime
 import pickle
 import os
-import scripts.timetable as tt
-import scripts.webPageHandler as wph
-import scripts.mailaccess as ma
+import timetable as tt
+import webPageHandler as wph
+import mailaccess as ma
 import time
+import sys
 
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 
@@ -48,7 +49,11 @@ def compare_times(timeone,timetwo): #the function return 0 if timeone is greater
 
 def get_next_class(ctime,todlist,x,tomlist,y,dayafterlist,z): #The function obtains the next class time and day
 
+    print('\n\n')
+    print(todlist)
+    print('\n\n')
     for i in todlist:
+        print(i)
         if compare_times(ctime,i[1]) == 1:
             return [i,0]
     if len(tomlist) != 0:
@@ -63,6 +68,8 @@ def twelve_to_24(twelvetime): #05:45 PM
     else:
         hr = int(temp[0].split(':')[0])
         hr += 12
+        if hr==24:
+            hr=00
         min = int(temp[0].split(':')[1])
         fin = str(hr)+':'+str(min)+':'+'00'
     return fin
@@ -88,7 +95,10 @@ def calculate_seconds(cxtime,nxclass): #The function returns the difference betw
 
 if __name__ == '__main__':
     while(1):
-        tt.tt_runner()
+        try:
+            tt.tt_runner()
+        except:
+            print('error')
 
         today = days[datetime.date.today().weekday()] #days gets the value(string) of the current day
         tom = datetime.date.today() + datetime.timedelta(days=1)
@@ -115,9 +125,12 @@ if __name__ == '__main__':
 
         print('next class ',next_class[0][0], 'at', next_class[0][1], 'in', remaining_time)
 
-        #time.sleep(remaining_time+180) #sleeps the program until 3 min after before the upcoming class
+        for i in range(remaining_time+180,0,-1):
+            sys.stdout.write(str(i)+' ')
+            sys.stdout.flush()
+            time.sleep(1) #sleeps the program until 3 min after before the upcoming class
 
-        class_link = ma.get_the_link(next_class,3) #this function should be in the mailaccess.py file and should return either the link of the google meet or should automatically fall back to to the fallbackprotocol and find the link and return it 
+        class_link = ma.get_the_link(next_class,20) #this function should be in the mailaccess.py file and should return either the link of the google meet
 
         print('\n\n','Class Link is ',class_link)
 

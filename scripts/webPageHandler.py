@@ -17,6 +17,7 @@ def web_page_opener(link):
     temp = 'user-data-dir='+drivers+'\myprofile'
     to = Options()
     to.add_argument(temp)
+    to.add_argument("--mute-audio")
     meetdriver = webdriver.Chrome(executable_path=drivers+'\chromedriver.exe', chrome_options=to)
     meetdriver.get(link)
 

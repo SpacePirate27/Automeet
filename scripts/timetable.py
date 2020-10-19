@@ -9,6 +9,7 @@ from selenium.webdriver.chrome.options import Options
 import os.path
 from operator import itemgetter
 import getpass
+import time
 
 times=['08:45 AM','09:45 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:15 PM','04:15 PM']
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
@@ -18,9 +19,11 @@ def profile_creator(): #the function receives the meet link, the function first 
     temp = 'user-data-dir='+drivers+'\myprofile'
     to = Options()
     to.add_argument(temp)
-    to.add_experimental_option('detach',True)
+    print('A browser will open! Login in to your SASTRA Account in that')
+    time.sleep(5)
     prf = webdriver.Chrome(executable_path=drivers+'\chromedriver.exe', chrome_options=to)
-    prf.get('http://mail.google.com')
+    prf.get('https://accounts.google.com')
+    x=input('Press enter to continue')
     
 def fun(course):
     timing=course[1]
@@ -80,12 +83,12 @@ def tt_runner():
         dir = os.getcwd()+'\\timetables\\'+i+'.pkl'
         if os.path.isfile(dir) is False:
             print('Enter the timetable for '+i)
-            print('If there are no courses for the day, type nill as course code')
+            print('If there are no courses for the day, type \'nill\' as course code')
             temp = []
             flag = 'y'
             while(flag == 'y'):
                 cc = None
-                time = None
+                tim = None
                 try:
                     cc = prompt('Enter the course code: ',completer=WordCompleter(courses))
                     if cc == 'nill':
@@ -96,10 +99,10 @@ def tt_runner():
                 except:
                     print('error')
                 try:
-                    time = prompt('Enter the time: ',completer=WordCompleter(times))
+                    tim = prompt('Enter the time: ',completer=WordCompleter(times))
                 except:
                     print('Error occured')
-                temp.append((cc,time))
+                temp.append((cc,tim))
                 flag = input('Do you want to add another course? (y/n)')
             final_tt = []
             if len(temp) != 0:
@@ -148,7 +151,6 @@ def tt_runner():
         fo.close
 
     webdri_dir=os.getcwd()+'\\web_drivers\\myprofile'
-    print(webdri_dir)
 
     if os.path.isdir(webdri_dir) is False:
         profile_creator()
