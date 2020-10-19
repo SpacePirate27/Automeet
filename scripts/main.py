@@ -14,7 +14,6 @@ from datetime import timedelta
 import datetime
 import pickle
 import os
-import scripts.timetable as tt
 from scripts.timetable import tt_runner
 import scripts.webPageHandler as wph
 import scripts.mailaccess as ma

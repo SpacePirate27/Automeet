@@ -19,6 +19,7 @@ def profile_creator(): #the function receives the meet link, the function first 
     temp = 'user-data-dir='+drivers+'\myprofile'
     to = Options()
     to.add_argument(temp)
+    to.add_experimental_option('detach',True)
     print('A browser will open! Login in to your SASTRA Account in that')
     time.sleep(5)
     prf = webdriver.Chrome(executable_path=drivers+'\chromedriver.exe', chrome_options=to)
