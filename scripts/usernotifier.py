@@ -19,7 +19,7 @@ if sys.platform.startswith('linux'):
     icopath = 'automeet.png'
 elif sys.platform.startswith('windows'):
     icopath = 'automeet.ico'
-def sendNotif(param):
+def notifier(param):
     Notification(
 	title=notif_title,
     description=notif_desc[param],
@@ -27,4 +27,10 @@ def sendNotif(param):
 	duration=5,
 	urgency=Notification.URGENCY_CRITICAL
 ).send()
+
+def sendNotif(param):
+    try:
+        notifier(param)
+    except:
+        print('User Notified')
 

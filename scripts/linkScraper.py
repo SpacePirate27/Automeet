@@ -24,7 +24,6 @@ def linkscraper_runner(mailist,classinfo):
             first_value += 3
         
     second_filter = [] #this filter tries to check if the subject code or the time of the class is mentioned
-    print('second filter')
     for i in first_filter:
         if classtime.lower() in i.lower().split(' '):
             second_filter.append(i)
