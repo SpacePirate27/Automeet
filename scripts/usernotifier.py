@@ -16,25 +16,24 @@ notif_desc = ["Entered the class",
         "Audio Muted",
         "Video turned off"]
 
-def notifier(param):
+def notifier(param,icpath):
     Notification(
 	title=notif_title,
     description=notif_desc[param],
-	icon_path=icopath,
+	icon_path=icpath,
 	duration=5,
 	urgency=Notification.URGENCY_CRITICAL
 ).send()
 
 def sendNotif(param):
-    try:
-        notifier(param)
-    except:
-        print('User Notified')
 
-if __name__ == "__main__":
     icopath = ''
     if sys.platform.startswith('linux'):
         icopath = os.getcwd().split('\\scripts')[0]+'\\automeet.png'
-    elif sys.platform.startswith('windows'):
+    elif sys.platform.startswith('win'):
         icopath = os.getcwd().split('\\scripts')[0]+'\\automeet.ico'
-    print(icopath)
+
+    try:
+        notifier(param,icopath)
+    except:
+        print('User Notified')
