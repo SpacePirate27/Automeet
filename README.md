@@ -5,4 +5,4 @@ Input your timetable and lo! Get 100% without attending the classes ;)
 
 To run main.py,
 1) Install Python
-2) Run " python -m install datetime prompt_toolkit selenium py-notifier win10toast " (without quotes)
+2) Run " python -m pip install datetime prompt_toolkit selenium py-notifier win10toast " (without quotes)
