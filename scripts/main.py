@@ -18,6 +18,7 @@ import timetable as tt
 import webPageHandler as wph
 import mailaccess as ma
 import time
+import pyfiglet
 import sys
 
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
@@ -94,6 +95,10 @@ def calculate_seconds(cxtime,nxclass): #The function returns the difference betw
     return final_time
 
 if __name__ == '__main__':
+
+    awesome_disp = pyfiglet.figlet_format('AUTOMEET')
+    print(awesome_disp)
+
     while(1):
         try:
             tt.tt_runner()
@@ -105,7 +110,6 @@ if __name__ == '__main__':
         datom = datetime.date.today() + datetime.timedelta(days=2)
         tomorrow = days[tom.weekday()]
         dayaftertom = days[datom.weekday()]
-        print(today,tomorrow,dayaftertom)
 
         file_handler = open(os.getcwd()+'\\timetables\\'+today+'.pkl',"rb")
         today_classes_list = pickle.load(file_handler)
@@ -123,10 +127,10 @@ if __name__ == '__main__':
         next_class = get_next_class(current_time,today_classes_list,today,tomorrow_classes_list,tomorrow,dayafter_classes_list,dayaftertom)
         remaining_time = calculate_seconds(current_time,next_class)
 
-        print('next class',next_class[0][0], 'at', next_class[0][1], 'in', remaining_time)
+        print('Next Class',next_class[0][0], 'is at', next_class[0][1], 'and starts in', int(remaining_time)//60,'minutes')
 
         for i in range(remaining_time+180,0,-1):
-            sys.stdout.write(str(i)+' ' + '\r')
+            sys.stdout.write(' '+str(i)+' seconds remaining' + '\r')
             sys.stdout.flush()
             time.sleep(1) #sleeps the program until 3 min after before the upcoming class
 
