@@ -7,6 +7,7 @@
 
 from pynotifier import Notification
 import sys
+import os
 
 notif_title = "Automeet Notification"
 notif_desc = ["Entered the class",
@@ -14,11 +15,7 @@ notif_desc = ["Entered the class",
         "Found the class link",
         "Audio Muted",
         "Video turned off"]
-icopath = ''
-if sys.platform.startswith('linux'):
-    icopath = 'automeet.png'
-elif sys.platform.startswith('windows'):
-    icopath = 'automeet.ico'
+
 def notifier(param):
     Notification(
 	title=notif_title,
@@ -34,3 +31,10 @@ def sendNotif(param):
     except:
         print('User Notified')
 
+if __name__ == "__main__":
+    icopath = ''
+    if sys.platform.startswith('linux'):
+        icopath = os.getcwd().split('\\scripts')[0]+'\\automeet.png'
+    elif sys.platform.startswith('windows'):
+        icopath = os.getcwd().split('\\scripts')[0]+'\\automeet.ico'
+    print(icopath)
