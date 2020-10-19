@@ -24,6 +24,7 @@ def profile_creator(): #the function receives the meet link, the function first 
     prf = webdriver.Chrome(executable_path=drivers+'\chromedriver.exe', chrome_options=to)
     prf.get('https://accounts.google.com')
     x=input('Press enter to continue')
+    prf.close()
     
 def fun(course):
     timing=course[1]
