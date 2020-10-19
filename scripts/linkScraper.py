@@ -4,8 +4,8 @@
 # call webPageHandler
 
 
-import mailaccess as ma
-import usernotifier
+import scripts.mailaccess as ma
+import scripts.usernotifier as uno
 
 def linkscraper_runner(mailist,classinfo):
     classcode = classinfo[0][0]
@@ -57,5 +57,5 @@ def linkscraper_runner(mailist,classinfo):
         if 'meet.google.com' in i.split('/'):
             link = i
     
-    usernotifier.sendNotif(2)
+    uno.sendNotif(2)
     return link

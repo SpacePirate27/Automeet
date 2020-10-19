@@ -135,23 +135,22 @@ def tt_runner():
         fake = input()
         
         email = input('Enter the SASTRA Email ID: ')
-        print('Enter the SASTRA Password (Your password will be stored locally on your device and will not be shared anywhere else!!!)')
-        passwo = ''
-        try: 
-            passwo = getpass.getpass()
-        except Exception as error: 
-            print('ERROR', error) 
-
         dirc = os.getcwd()+'\\user_mail_creds\\'+'user_name'+'.pkl'
         fo = open(dirc,'wb')
         pickle.dump(email,fo)
         fo.close
 
-        dirc = os.getcwd()+'\\user_mail_creds\\'+'password'+'.pkl'
-        pass_file = open(dirc,'wb')
-        pickle.dump(passwo,pass_file)
-        pass_file.close
+        print('Enter the SASTRA Password (Your password will be stored locally on your device and will not be shared anywhere else!!!)')
+        passwo = ''
+        try: 
+            passwo = getpass.getpass()
+            dirc = os.getcwd()+'\\user_mail_creds\\'+'password'+'.pkl'
+            pass_file = open(dirc,'wb')
+            pickle.dump(passwo,pass_file)
+            pass_file.close
 
+        except Exception as error: 
+            print('ERROR', error) 
     webdri_dir=os.getcwd()+'\\web_drivers\\myprofile'
 
     if os.path.isdir(webdri_dir) is False:

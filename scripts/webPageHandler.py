@@ -6,7 +6,7 @@
 # close the meet when the number of participants fall below 10
 
 from time import sleep
-import usernotifier
+import scripts.usernotifier as uno
 import selenium 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -27,19 +27,23 @@ def web_page_opener(link):
 
     time.sleep(5)
 
-
-    mic_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[1]/div/div[4]/div[1]/div/div/div').click()
-    vid_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[1]/div/div[4]/div[2]/div/div').click()
+    try:
+        mic_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[1]/div/div[4]/div[1]/div/div/div').click()
+        vid_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[1]/div/div[4]/div[2]/div/div').click()
+    except:
+        time.sleep(10)
+        mic_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[1]/div/div[4]/div[1]/div/div/div').click()
+        vid_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[1]/div/div[4]/div[2]/div/div').click()
 
     time.sleep(2)
     
-    usernotifier.sendNotif(4)
+    uno.sendNotif(4)
     
     time.sleep(3)
 
     join_btn = meetdriver.find_element_by_xpath('/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div[1]').click()
 
-    usernotifier.sendNotif(0)
+    uno.sendNotif(0)
 
     time.sleep(10)
     
@@ -65,4 +69,4 @@ def web_page_opener(link):
                 break
 
     meetdriver.close()
-    usernotifier.sendNotif(1)
+    uno.sendNotif(1)

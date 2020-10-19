@@ -14,9 +14,10 @@ from datetime import timedelta
 import datetime
 import pickle
 import os
-import timetable as tt
-import webPageHandler as wph
-import mailaccess as ma
+import scripts.timetable as tt
+from scripts.timetable import tt_runner
+import scripts.webPageHandler as wph
+import scripts.mailaccess as ma
 import time
 import pyfiglet
 import sys
@@ -94,17 +95,15 @@ def calculate_seconds(cxtime,nxclass): #The function returns the difference betw
 
     return final_time
 
-if __name__ == '__main__':
+def mainrunner():
 
     awesome_disp = pyfiglet.figlet_format('AUTOMEET')
     print(awesome_disp)
 
     while(1):
-        try:
-            tt.tt_runner()
-        except:
-            print('error')
 
+        tt_runner()
+        
         today = days[datetime.date.today().weekday()] #days gets the value(string) of the current day
         tom = datetime.date.today() + datetime.timedelta(days=1)
         datom = datetime.date.today() + datetime.timedelta(days=2)
