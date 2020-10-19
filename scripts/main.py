@@ -129,10 +129,10 @@ if __name__ == '__main__':
 
         print('Next Class',next_class[0][0], 'is at', next_class[0][1], 'and starts in', int(remaining_time)//60,'minutes')
 
-        for i in range(remaining_time+180,0,-1):
-            sys.stdout.write(' '+str(i)+' seconds remaining' + '\r')
-            sys.stdout.flush()
-            time.sleep(1) #sleeps the program until 3 min after before the upcoming class
+        #for i in range(remaining_time+180,0,-1):
+        #    sys.stdout.write(' '+str(i)+' seconds remaining' + '\r')
+        #    sys.stdout.flush()
+        #    time.sleep(1) #sleeps the program until 3 min after before the upcoming class
 
         class_link = ma.get_the_link(next_class,20) #this function should be in the mailaccess.py file and should return either the link of the google meet
 

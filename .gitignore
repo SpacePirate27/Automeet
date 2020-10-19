@@ -1,3 +1,5 @@
 /Plan.txt
 *.pkl
 web_drivers/myprofile/
+scripts/__pycache__/webPageHandler.cpython-38.pyc
+*.pyc
