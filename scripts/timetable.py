@@ -129,17 +129,17 @@ def tt_runner():
         file_object.close()
     
 
-
     dirc = os.getcwd()+'\\user_mail_creds\\'+'user_name'+'.pkl'
     if os.path.isfile(dirc) is False:
         print('Before proceeding, ensure that less secure apps is allowed on your SASTRA account by clicking on the link below, \n\n https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiB2oXrk7zsAhXGZSsKHc6pAD4QFjAAegQIAxAC&url=https%3A%2F%2Fmyaccount.google.com%2Flesssecureapps&usg=AOvVaw3FH1O5TwzTEB9B9yhEUsI7 \n\n then press enter')
         fake = input()
         
-        email = input('Enter the SASTRA Email ID')
+        email = input('Enter the SASTRA Email ID: ')
         print('Enter the SASTRA Password (Your password will be stored locally on your device and will not be shared anywhere else!!!)')
-        p = ''
+        passwo = ''
         try: 
-            p = getpass.getpass() 
+            passwo = getpass.getpass()
+            print(passwo)
         except Exception as error: 
             print('ERROR', error) 
 
@@ -149,9 +149,9 @@ def tt_runner():
         fo.close
 
         dirc = os.getcwd()+'\\user_mail_creds\\'+'password'+'.pkl'
-        fo = open(dirc,'wb')
-        pickle.dump(p,fo)
-        fo.close
+        pass_file = open(dirc,'wb')
+        pickle.dump(passwo,pass_file)
+        pass_file.close
 
     webdri_dir=os.getcwd()+'\\web_drivers\\myprofile'
 
