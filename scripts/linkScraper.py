@@ -4,7 +4,7 @@
 # call webPageHandler
 
 
-import mailaccess as ma
+import scripts.mailaccess as ma
 
 def linkscraper_runner(mailist,classinfo):
     classcode = classinfo[0][0]

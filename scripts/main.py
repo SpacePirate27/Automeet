@@ -14,9 +14,9 @@ from datetime import timedelta
 import datetime
 import pickle
 import os
-import timetable as tt
-import webPageHandler as wph
-import mailaccess as ma
+import scripts.timetable as tt
+import scripts.webPageHandler as wph
+import scripts.mailaccess as ma
 import time
 
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
