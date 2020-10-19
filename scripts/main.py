@@ -49,11 +49,11 @@ def compare_times(timeone,timetwo): #the function return 0 if timeone is greater
 
 def get_next_class(ctime,todlist,x,tomlist,y,dayafterlist,z): #The function obtains the next class time and day
 
-    print('\n\n')
-    print(todlist)
-    print('\n\n')
+    
+    #print(todlist)
+    
     for i in todlist:
-        print(i)
+        #print(i)
         if compare_times(ctime,i[1]) == 1:
             return [i,0]
     if len(tomlist) != 0:
@@ -123,10 +123,10 @@ if __name__ == '__main__':
         next_class = get_next_class(current_time,today_classes_list,today,tomorrow_classes_list,tomorrow,dayafter_classes_list,dayaftertom)
         remaining_time = calculate_seconds(current_time,next_class)
 
-        print('next class ',next_class[0][0], 'at', next_class[0][1], 'in', remaining_time)
+        print('next class',next_class[0][0], 'at', next_class[0][1], 'in', remaining_time)
 
         for i in range(remaining_time+180,0,-1):
-            sys.stdout.write(str(i)+' ')
+            sys.stdout.write(str(i)+' ' + '\r')
             sys.stdout.flush()
             time.sleep(1) #sleeps the program until 3 min after before the upcoming class
 
