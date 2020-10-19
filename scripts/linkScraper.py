@@ -41,10 +41,6 @@ def linkscraper_runner(mailist,classinfo):
             second_filter.append(i)
         if t_type2 in i.split(' ') and i not in second_filter:
             second_filter.append(i)
-        print('\n\n\n')
-        print(i)
-        print('\n\n\n')
-
 
     if len(second_filter) != 0: #if no link passes the second filter, then take the newest first filter pass, or take the first second filter if any links passes the second filter
         final_body = second_filter[0]
