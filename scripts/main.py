@@ -23,30 +23,38 @@ import sys
 
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 
-def compare_times(timeone,timetwo): #the function return 0 if timeone is greater and return 1 if timetwo is greater
-    t1 = timeone.split(' ')
-    t2 = timetwo.split(' ')
-    if(t1[1]!=t2[1]):
-        if 'PM' in t1:
-            return 0
-        else:
-            return 1
+def twelve_to_24(twelvetime):
+    temp = twelvetime.split(' ')
+    if temp[1] == 'AM':
+        min = temp[0].split(':')[1]
+        hr = temp[0].split(':')[0]
+        if hr == '12':
+            hr = '00'
+        fin = hr + ':' + min + ':' + '00'
     else:
-        t1hr = t1[0].split(':')[0]
-        t2hr = t2[0].split(':')[0]
+        hr = int(temp[0].split(':')[0])
+        if hr != 12:
+            hr += 12
+        min = temp[0].split(':')[1]
+        fin = str(hr)+':'+min+':'+'00'
+    return fin
 
-        if t1hr > t2hr:
+def compare_times(timeone,timetwo): #the function return 0 if timeone is greater and return 1 if timetwo is greater 12:45 am, 945 am , expected op is 1
+
+    t1 = twelve_to_24(timeone).split(':')
+    t2 = twelve_to_24(timetwo).split(':')
+
+    if t1[0] > t2[0]:
+        return 0
+    elif t1[0] < t2[0]:
+        return 1
+    else:
+        if t1[1] > t2[1]:
             return 0
-        elif t2hr > t1hr:
-            return 1
         else:
-            t1min = t1[0].split(':')[1]
-            t2min = t2[0].split(':')[1]
+            return 1
 
-            if t1min>t2min:
-                return 0
-            else:
-                return 1
+    
 
 def get_next_class(ctime,todlist,x,tomlist,y,dayafterlist,z): #The function obtains the next class time and day
 
@@ -62,21 +70,7 @@ def get_next_class(ctime,todlist,x,tomlist,y,dayafterlist,z): #The function obta
     else:
         return [dayafterlist[0],2]
 
-def twelve_to_24(twelvetime): #05:45 PM
-    temp = twelvetime.split(' ')
-    if temp[1] == 'AM':
-        min = temp[0].split(':')[1]
-        hr = temp[0].split(':')[0]
-        if hr == '12':
-            hr = '00'
-        fin = hr + ':' + min + ':' + '00'
-    else:
-        hr = int(temp[0].split(':')[0])
-        if hr != 12:
-            hr += 12
-        min = temp[0].split(':')[1]
-        fin = str(hr)+':'+min+':'+'00'
-    return fin
+
 
 def calculate_seconds(cxtime,nxclass): #The function returns the difference between timea and timeb in SECONDS
     final_time = 0
