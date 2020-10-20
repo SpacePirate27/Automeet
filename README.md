@@ -5,4 +5,3 @@
 - Install the application
 - Login in using your SASTRA mail id - (Turn on less secure apps)
 - And this application will keep running and attending the classes on your behalf
-https://img.shields.io/github/license/RamNarayan27/Automeet?style=for-the-badge
