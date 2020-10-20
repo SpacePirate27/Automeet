@@ -1,4 +1,5 @@
 # Automeet
+![GitHub](https://img.shields.io/github/license/RamNarayan27/Automeet?logo=Github&style=for-the-badge)
 - This application has been developed to automate the task of attending the online class by students.
 - Usually, we either open the Google Classroom or check our mails for the meeting link and then login in with the appropriate account into the meeting link.
 - This application automated the above process for your convinience.
