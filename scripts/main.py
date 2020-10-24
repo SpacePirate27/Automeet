@@ -14,9 +14,10 @@ from datetime import timedelta
 import datetime
 import pickle
 import os
+from pickle import FALSE
 from scripts.timetable import tt_runner
 import scripts.webPageHandler as wph
-import scripts.mailaccess as ma
+import scripts.classroomaccess as ma
 import time
 import pyfiglet
 import sys
@@ -79,7 +80,7 @@ def calculate_seconds(cxtime,nxclass): #The function returns the difference betw
     elif nxclass[1] == 1:
         final_time = 86400
     else:
-        final_time = 1,72,800
+        final_time = 172800
 
     timea = twelve_to_24(cxtime)
     timeb = twelve_to_24(nxclass[0][1])
@@ -88,17 +89,17 @@ def calculate_seconds(cxtime,nxclass): #The function returns the difference betw
     tdelta = datetime.datetime.strptime(timeb, fmt) - datetime.datetime.strptime(timea, fmt)
     seconds = int(tdelta.total_seconds())
     final_time += seconds
-
     return final_time
 
 def mainrunner():
 
     awesome_disp = pyfiglet.figlet_format('AUTOMEET')
     print(awesome_disp)
+    temp = False
 
-    while(1):
+    while(temp == False):
 
-        tt_runner()
+        creds = tt_runner()
         
         today = days[datetime.date.today().weekday()] #days gets the value(string) of the current day
         tom = datetime.date.today() + datetime.timedelta(days=1)
@@ -124,16 +125,18 @@ def mainrunner():
 
         print('Next Class',next_class[0][0], 'is at', next_class[0][1], 'and starts in', int(remaining_time)//60,'minutes')
 
-        for i in range(remaining_time+180,0,-1):
-            sys.stdout.write(' '+str(i)+' seconds remaining' + '\r')
-            sys.stdout.flush()
-            time.sleep(1) #sleeps the program until 3 min after before the upcoming class
+        #for i in range(remaining_time+180,0,-1):
+        #    sys.stdout.write(' '+str(i)+' seconds remaining' + '\r')
+        #    sys.stdout.flush()
+        #    time.sleep(1) #sleeps the program until 3 min after before the upcoming class
 
-        class_link = ma.get_the_link(next_class,20) #this function should be in the mailaccess.py file and should return either the link of the google meet
+        class_link = ma.get_the_link(next_class,creds) #this function should be in the classroomaccess.py file and should return either the link of the google meet
 
         print('\n\n','Class Link is ',class_link)
 
-        wph.web_page_opener(class_link) #this function should be present in the webpagehandler python file and should accept the link and open it in the current profile, NOTE: webpageopener function will also close the webpage upon the class getting over
+        #wph.web_page_opener(class_link) #this function should be present in the webpagehandler python file and should accept the link and open it in the current profile, NOTE: webpageopener function will also close the webpage upon the class getting over
+
+        temp = True
 
 
 
