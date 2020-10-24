@@ -4,7 +4,7 @@
 # call webPageHandler
 
 
-import scripts.mailaccess as ma
+import scripts.classroomaccess as ma
 import scripts.usernotifier as uno
 
 def linkscraper_runner(mailist,classinfo):
@@ -53,6 +53,7 @@ def linkscraper_runner(mailist,classinfo):
     final_list = final_body.split(' ') #retrieve the link from the body of the mail and return it back to the main function
 
     link = ''
+    print(final_list)
     for i in final_list:
         if 'meet.google.com' in i.split('/'):
             link = i
