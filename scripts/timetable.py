@@ -4,6 +4,7 @@ from os.path import isfile
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 import pickle
+from prompt_toolkit.filters import cli
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import os.path
@@ -11,8 +12,30 @@ from operator import itemgetter
 import getpass
 import time
 
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+
 times=['08:45 AM','09:45 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:15 PM','04:15 PM']
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
+SCOPES = ['https://www.googleapis.com/auth/classroom.courses.readonly','https://www.googleapis.com/auth/classroom.announcements']
+
+def initiate_credentials():
+    creds = None
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+    if not creds or not creds.valid: #ADD OAUTH 2.0 REQUESTS API HERE TO CREATE THE CREDENTIALS FILE  
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            creds = flow.run_local_server()
+        # Save the credentials for the next run
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+    return creds
 
 def profile_creator(): #the function receives the meet link, the function first needs perform the above mentioned functions and return nothing
     drivers = os.getcwd().split('\\scripts')[0]+'\\web_drivers'
@@ -25,7 +48,6 @@ def profile_creator(): #the function receives the meet link, the function first 
     prf = webdriver.Chrome(executable_path=drivers+'\chromedriver.exe', chrome_options=to)
     prf.get('https://accounts.google.com')
     x=input('Press enter to continue')
-    prf.close()
     
 def fun(course):
     timing=course[1]
@@ -69,6 +91,15 @@ def sort_the_timetable(tt_list): # function to sort the timetable based on the t
         tt.append(course)
     return tt
 
+def get_courses_list(credentials_user):
+    service = build('classroom', 'v1', credentials=credentials_user)
+    results = service.courses().list(pageSize=10,courseStates='ACTIVE').execute()
+    cses = results.get('courses', [])
+    clist = []
+    for course in cses:
+        clist.append(course['name'])
+    return clist
+
 def tt_runner():
 
     os.chdir(os.getcwd().split('\\scripts')[0])
@@ -82,6 +113,17 @@ def tt_runner():
         inp_course = open(os.getcwd()+'\\timetables\\'+'courses'+'.pkl',"rb")
         courses = pickle.load(inp_course)
         inp_course.close()
+    
+    tempcreds = initiate_credentials()
+    cseslist = get_courses_list(tempcreds)
+    #print('\n\n\n',cseslist,'\n\n\n')
+    clcourse = {}
+    if os.path.isfile(os.getcwd()+'\\timetables\\'+'course_classroom'+'.pkl') is True:
+        classroom_file_obj = open(os.getcwd()+'\\timetables\\'+'course_classroom'+'.pkl',"rb")
+        clcourse = pickle.load(classroom_file_obj)
+        classroom_file_obj.close()
+
+
 
     for i in days:
         dir = os.getcwd()+'\\timetables\\'+i+'.pkl'
@@ -100,6 +142,8 @@ def tt_runner():
                         break
                     if cc not in courses:
                         courses.append(cc)
+                        cl_link = prompt('Pick the google classroom link from the dropdown: ',completer=WordCompleter(cseslist))
+                        clcourse[cc] = cl_link
                 except:
                     print('error')
                 try:
@@ -123,12 +167,18 @@ def tt_runner():
             except:
                 print('Failed to save')
     
+    #saving courses
     dirc = os.getcwd()+'\\timetables\\'+'courses'+'.pkl'
     if courses is not []:    
         file_object = open(dirc,'wb')
         pickle.dump(courses,file_object)
         file_object.close()
-    
+    #saving classroom info
+    dirc = os.getcwd()+'\\timetables\\'+'course_classroom'+'.pkl'
+    if len(clcourse.keys()) != 0:
+        classrooom_info_obj = open(dirc,'wb')
+        pickle.dump(clcourse,classrooom_info_obj)
+        classrooom_info_obj.close()
 
     dirc = os.getcwd()+'\\user_mail_creds\\'+'user_name'+'.pkl'
     if os.path.isfile(dirc) is False:
@@ -156,6 +206,8 @@ def tt_runner():
 
     if os.path.isdir(webdri_dir) is False:
         profile_creator()
+
+    return tempcreds
         
     
 
