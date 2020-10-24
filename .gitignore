@@ -4,3 +4,4 @@ web_drivers/myprofile/
 *.pyc
 *.pyc
 credentials.json
+token.pickle
