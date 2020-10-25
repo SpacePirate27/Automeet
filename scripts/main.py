@@ -95,9 +95,10 @@ def calculate_seconds(cxtime,nxclass): #The function returns the difference betw
 def mainrunner():
 
     awesome_disp = pyfiglet.figlet_format('AUTOMEET')
-    print(awesome_disp)
-
     while(1):
+        
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(awesome_disp)
 
         creds = tt_runner()
         
