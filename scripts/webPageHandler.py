@@ -6,7 +6,7 @@
 # close the meet when the number of participants fall below 10
 
 from time import sleep
-import scripts.usernotifier as uno
+#import scripts.usernotifier as uno
 import selenium 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -20,6 +20,11 @@ def web_page_opener(link):
     temp = 'user-data-dir='+drivers+'\myprofile'
     to = Options()
     to.add_argument(temp)
+    to.add_argument("--use-fake-ui-for-media-stream")
+    to.add_argument("--use-fake-device-for-media-stream")
+    to.add_experimental_option("prefs", { 
+    "profile.default_content_setting_values.notifications": 1 
+})
     time1 = datetime.datetime.now()
 
     meetdriver = webdriver.Chrome(executable_path=drivers+'\chromedriver.exe', chrome_options=to)
@@ -70,3 +75,5 @@ def web_page_opener(link):
 
     meetdriver.close()
     uno.sendNotif(1)
+
+web_page_opener('https://www.google.com')
