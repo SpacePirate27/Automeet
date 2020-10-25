@@ -36,3 +36,10 @@
 * Hit `tab` to get a dropdown while entering the time or the classroom/calendar information
 
 * Once you finish setting up, the program should run on its own and be able to attend classes
+
+## To run python program
+
+* Install the required libraries
+```bash
+pip install -r requirements.txt
+```
