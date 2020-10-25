@@ -33,6 +33,6 @@
 
 * On the first run of the program, you need to enter the timetable with each course and timing, while entering if you receive an error in the program, just hit enter and continue entering the timetable ( yet to fix )
 
-* Hit tab to get a dropdown while entering the time or the classroom/calendar information
+* Hit `tab` to get a dropdown while entering the time or the classroom/calendar information
 
 * Once you finish setting up, the program should run on its own and be able to attend classes
