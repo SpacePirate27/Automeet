@@ -75,5 +75,3 @@ def web_page_opener(link):
 
     meetdriver.close()
     uno.sendNotif(1)
-
-web_page_opener('https://www.google.com')

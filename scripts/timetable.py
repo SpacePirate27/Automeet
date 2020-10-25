@@ -8,12 +8,7 @@ from prompt_toolkit.filters import cli
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import os.path
-from operator import itemgetter
-import getpass
 import time
-import random
-import string
-import secrets
 
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow

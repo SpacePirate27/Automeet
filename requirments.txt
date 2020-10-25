@@ -1,0 +1,8 @@
+datetime
+selenium
+prompt_toolkit
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+pyfiglet
+notify-py
