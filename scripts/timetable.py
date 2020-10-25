@@ -11,6 +11,9 @@ import os.path
 from operator import itemgetter
 import getpass
 import time
+import random
+import string
+import secrets
 
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -18,7 +21,7 @@ from google.auth.transport.requests import Request
 
 times=['08:45 AM','09:45 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:15 PM','04:15 PM']
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
-SCOPES = ['https://www.googleapis.com/auth/classroom.courses.readonly','https://www.googleapis.com/auth/classroom.announcements']
+SCOPES = ['https://www.googleapis.com/auth/classroom.courses.readonly','https://www.googleapis.com/auth/classroom.announcements','https://www.googleapis.com/auth/calendar.readonly','https://www.googleapis.com/auth/calendar.events']
 
 def initiate_credentials():
     creds = None
@@ -100,6 +103,14 @@ def get_courses_list(credentials_user):
         clist.append(course['name'])
     return clist
 
+def get_cal_list(creds_usr):
+    calservice = build('calendar', 'v3', credentials=creds_usr)
+    calendar_list = calservice.calendarList().list().execute()
+    cal_list = []
+    for calendar_list_entry in calendar_list['items']:
+        cal_list.append(calendar_list_entry['summary'])
+    return cal_list
+
 def tt_runner():
 
     os.chdir(os.getcwd().split('\\scripts')[0])
@@ -116,14 +127,18 @@ def tt_runner():
     
     tempcreds = initiate_credentials()
     cseslist = get_courses_list(tempcreds)
+    callist = get_cal_list(tempcreds)
     #print('\n\n\n',cseslist,'\n\n\n')
     clcourse = {}
     if os.path.isfile(os.getcwd()+'\\timetables\\'+'course_classroom'+'.pkl') is True:
         classroom_file_obj = open(os.getcwd()+'\\timetables\\'+'course_classroom'+'.pkl',"rb")
         clcourse = pickle.load(classroom_file_obj)
         classroom_file_obj.close()
-
-
+    calinfo = {}
+    if os.path.isfile(os.getcwd()+'\\timetables\\'+'course_calendar'+'.pkl') is True:
+        calendar_file_obj = open(os.getcwd()+'\\timetables\\'+'course_calendar'+'.pkl',"rb")
+        calinfo = pickle.load(calendar_file_obj)
+        calendar_file_obj.close()
 
     for i in days:
         dir = os.getcwd()+'\\timetables\\'+i+'.pkl'
@@ -144,6 +159,8 @@ def tt_runner():
                         courses.append(cc)
                         cl_link = prompt('Pick the google classroom link from the dropdown: ',completer=WordCompleter(cseslist))
                         clcourse[cc] = cl_link
+                        cal_name = prompt('Pick the name of the calendar from the dropdown: ',completer=WordCompleter(callist))
+                        calinfo[cc] = cal_name
                 except:
                     print('error')
                 try:
@@ -179,29 +196,14 @@ def tt_runner():
         classrooom_info_obj = open(dirc,'wb')
         pickle.dump(clcourse,classrooom_info_obj)
         classrooom_info_obj.close()
+    #saving calendar info
+    dirc = os.getcwd()+'\\timetables\\'+'course_calendar'+'.pkl'
+    if len(calinfo.keys()) != 0:
+        calendar_info_obj = open(dirc,'wb')
+        pickle.dump(calinfo,calendar_info_obj)
+        calendar_info_obj.close()
 
-    dirc = os.getcwd()+'\\user_mail_creds\\'+'user_name'+'.pkl'
-    if os.path.isfile(dirc) is False:
-        print('Before proceeding, ensure that less secure apps is allowed on your SASTRA account by clicking on the link below, \n\n https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiB2oXrk7zsAhXGZSsKHc6pAD4QFjAAegQIAxAC&url=https%3A%2F%2Fmyaccount.google.com%2Flesssecureapps&usg=AOvVaw3FH1O5TwzTEB9B9yhEUsI7 \n\n then press enter')
-        fake = input()
         
-        email = input('Enter the SASTRA Email ID: ')
-        dirc = os.getcwd()+'\\user_mail_creds\\'+'user_name'+'.pkl'
-        fo = open(dirc,'wb')
-        pickle.dump(email,fo)
-        fo.close
-
-        print('Enter the SASTRA Password (Your password will be stored locally on your device and will not be shared anywhere else!!!)')
-        passwo = ''
-        try: 
-            passwo = getpass.getpass()
-            dirc = os.getcwd()+'\\user_mail_creds\\'+'password'+'.pkl'
-            pass_file = open(dirc,'wb')
-            pickle.dump(passwo,pass_file)
-            pass_file.close
-
-        except Exception as error: 
-            print('ERROR', error) 
     webdri_dir=os.getcwd()+'\\web_drivers\\myprofile'
 
     if os.path.isdir(webdri_dir) is False:
