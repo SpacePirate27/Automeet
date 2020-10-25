@@ -154,8 +154,8 @@ def tt_runner():
                         courses.append(cc)
                         cl_link = prompt('Pick the google classroom link from the dropdown: ',completer=WordCompleter(cseslist))
                         clcourse[cc] = cl_link
-                        cal_name = prompt('Pick the name of the calendar from the dropdown: ',completer=WordCompleter(callist))
-                        calinfo[cc] = cal_name
+                        #cal_name = prompt('Pick the name of the calendar from the dropdown: ',completer=WordCompleter(callist))
+                        #calinfo[cc] = cal_name
                 except:
                     print('error')
                 try:
