@@ -20,7 +20,6 @@ import scripts.webPageHandler as wph
 import scripts.classroomaccess as ma
 import scripts.calendaraccess as cac
 import time
-import pyfiglet
 import sys
 
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
@@ -94,12 +93,8 @@ def calculate_seconds(cxtime,nxclass): #The function returns the difference betw
 
 def mainrunner():
 
-    awesome_disp = pyfiglet.figlet_format('AUTOMEET')
     while(1):
         
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print(awesome_disp)
-
         creds = tt_runner()
         
         today = days[datetime.date.today().weekday()] #days gets the value(string) of the current day

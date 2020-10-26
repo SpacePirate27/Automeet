@@ -10,6 +10,18 @@
     <height>949</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>870</width>
+    <height>949</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>870</width>
+    <height>949</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>AutoMeet</string>
   </property>
@@ -96,13 +108,19 @@
      <rect>
       <x>20</x>
       <y>400</y>
-      <width>223</width>
+      <width>323</width>
       <height>471</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
       <widget class="QLabel" name="label_6">
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
         <string>Timetable</string>
        </property>
@@ -158,6 +176,33 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="chrome_fix">
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Fix!!</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="chrome_tick">
          <property name="maximumSize">
           <size>
@@ -206,6 +251,33 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="cred_fix">
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Fix!!</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="cred_tick">
          <property name="maximumSize">
           <size>
@@ -236,6 +308,9 @@
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QLabel" name="tt_cross">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="maximumSize">
           <size>
            <width>50</width>
@@ -250,6 +325,33 @@
          </property>
          <property name="scaledContents">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="tt_fix">
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Fix!!</string>
          </property>
         </widget>
        </item>
@@ -309,6 +411,33 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="prof_fix">
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Fix!!</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="prof_tick">
          <property name="maximumSize">
           <size>
@@ -357,6 +486,33 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="cal_fix">
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Fix!!</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="cal_tick">
          <property name="maximumSize">
           <size>
@@ -401,6 +557,33 @@
          </property>
          <property name="scaledContents">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="class_fix">
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Fix!!</string>
          </property>
         </widget>
        </item>
@@ -490,6 +673,11 @@
       <height>71</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Current Time : </string>
     </property>
@@ -502,6 +690,11 @@
       <width>371</width>
       <height>71</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Next Class :</string>

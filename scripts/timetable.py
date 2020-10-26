@@ -45,7 +45,6 @@ def profile_creator(): #the function receives the meet link, the function first 
     time.sleep(5)
     prf = webdriver.Chrome(executable_path=drivers+'\\chromedriver.exe', chrome_options=to)
     prf.get('https://accounts.google.com')
-    x=input('Press enter to continue')
     
 def fun(course):
     timing=course[1]
@@ -200,10 +199,10 @@ def tt_runner():
         calendar_info_obj.close()
 
         
-    webdri_dir=os.getcwd()+'\\web_drivers\\myprofile'
+    #webdri_dir=os.getcwd()+'\\web_drivers\\myprofile'
 
-    if os.path.isdir(webdri_dir) is False:
-        profile_creator()
+    #if os.path.isdir(webdri_dir) is False:
+    #    profile_creator()
 
     return tempcreds
         
