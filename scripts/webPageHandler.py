@@ -6,13 +6,14 @@
 # close the meet when the number of participants fall below 10
 
 from time import sleep
-#import scripts.usernotifier as uno
+import scripts.usernotifier as uno
 import selenium 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
 import os
 import datetime
+
 
 
 def web_page_opener(link):
