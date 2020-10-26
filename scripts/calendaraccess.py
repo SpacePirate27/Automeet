@@ -19,7 +19,7 @@ def getthelink(nextclass,creds):
 
     starter = datetime.datetime.now()
     starttime = datetime.datetime.now().isoformat() + 'Z'
-    endtime = starter + datetime.timedelta(hours=1,minutes=20)
+    endtime = starter + datetime.timedelta(hours=1,minutes=5)
     endtime = endtime.isoformat() + 'Z'
     calservice = build('calendar', 'v3', credentials=creds)
     id_list = []
@@ -29,7 +29,7 @@ def getthelink(nextclass,creds):
     link = None
 
     for eachid in id_list:
-        eventc = calservice.events().list(calendarId=eachid,timeMin=starttime,timeMax=endtime).execute()
+        eventc = calservice.events().list(calendarId=eachid,timeMin=starttime,timeMax=endtime,singleEvents=True,orderBy='startTime').execute()
         eventc = eventc['items']
         try:
             link = eventc[0]['conferenceData']['entryPoints'][0]['uri']
