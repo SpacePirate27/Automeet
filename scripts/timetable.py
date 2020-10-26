@@ -138,6 +138,7 @@ def tt_runner():
     for i in days:
         dir = os.getcwd()+'\\timetables\\'+i+'.pkl'
         if os.path.isfile(dir) is False:
+            print('\n\n')
             print('Enter the timetable for '+i)
             print('If there are no courses for the day, type \'nill\' as course code')
             temp = []
@@ -146,6 +147,7 @@ def tt_runner():
                 cc = None
                 tim = None
                 try:
+                    print('\n\n')
                     cc = prompt('Enter the course code: ',completer=WordCompleter(courses))
                     if cc == 'nill':
                         temp = []
@@ -167,7 +169,6 @@ def tt_runner():
             final_tt = []
             if len(temp) != 0:
                 final_tt = sort_the_timetable(temp)
-            print(final_tt)
             
             #attempting to save
             print('Saving',i,'\b'+'s timetable')
