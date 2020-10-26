@@ -43,7 +43,7 @@ def profile_creator(): #the function receives the meet link, the function first 
     to.add_experimental_option('detach',True)
     print('A browser will open! Login in to your SASTRA Account in that')
     time.sleep(5)
-    prf = webdriver.Chrome(executable_path=drivers+'\chromedriver.exe', chrome_options=to)
+    prf = webdriver.Chrome(executable_path=drivers+'\\chromedriver.exe', chrome_options=to)
     prf.get('https://accounts.google.com')
     x=input('Press enter to continue')
     
