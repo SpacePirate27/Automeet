@@ -126,17 +126,20 @@ def mainrunner():
 
         print('Next Class',next_class[0][0], 'is at', next_class[0][1], 'and starts in', int(remaining_time)//60,'minutes')
 
-        for i in range(remaining_time-300,0,-1):
-            sys.stdout.write(' '+str(i)+' seconds remaining' + '\r')
-            sys.stdout.flush()
-            time.sleep(1) #sleeps the program until 5 min before before the upcoming class
+        next_calendar_check = datetime.datetime.now() + datetime.timedelta(seconds=remaining_time-300) #sleeps the program until 5 min before before the upcoming class
+        next_classroom_check = datetime.datetime.now() + datetime.timedelta(seconds=remaining_time+180)
+
+        while datetime.datetime.now() < next_calendar_check:
+            print('Waiting for Class')
+            #Display object . settext (waiting for class)
+            time.sleep(30) 
 
         class_link = cac.getthelink(next_class,creds) #this function should be in the calendaraccess.py file and should return either the link of the google meet or none
+
+        while datetime.datetime.now() < next_classroom_check:
+            time.sleep(30)
+
         if class_link == None:
-            for i in range(480,0,-1):
-                sys.stdout.write(' '+str(i)+' seconds remaining' + '\r')
-                sys.stdout.flush()
-                time.sleep(1)
             class_link = ma.get_the_link(next_class,creds)
 
         print('\n\n','Class Link is ',class_link)
