@@ -5,3 +5,5 @@ web_drivers/myprofile/
 *.pyc
 credentials.json
 token.pickle
+log.txt
+scripts/temp.py
