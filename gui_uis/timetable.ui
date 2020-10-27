@@ -32,8 +32,8 @@
    <widget class="QLabel" name="subtitle">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>180</y>
+      <x>300</x>
+      <y>160</y>
       <width>571</width>
       <height>51</height>
      </rect>
@@ -51,7 +51,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>-10</y>
       <width>281</width>
       <height>351</height>
      </rect>
@@ -66,8 +66,8 @@
    <widget class="QLabel" name="title">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>110</y>
+      <x>450</x>
+      <y>90</y>
       <width>211</width>
       <height>61</height>
      </rect>
@@ -84,7 +84,7 @@
      <enum>Qt::PlainText</enum>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="coursebox">
     <property name="geometry">
      <rect>
       <x>270</x>
@@ -95,24 +95,6 @@
     </property>
     <property name="editable">
      <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="dayname">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>340</y>
-      <width>551</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>24</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Enter the timetable for &quot;DAY&quot;</string>
     </property>
    </widget>
    <widget class="QLabel" name="course_title">
@@ -169,7 +151,7 @@
      <string>Timing</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox_2">
+   <widget class="QComboBox" name="timebox">
     <property name="geometry">
      <rect>
       <x>270</x>
@@ -182,7 +164,7 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox_3">
+   <widget class="QComboBox" name="classroombox">
     <property name="geometry">
      <rect>
       <x>270</x>
@@ -213,10 +195,13 @@
      <string>Name of Google Classroom</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="addbutton">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>360</x>
+      <x>190</x>
       <y>830</y>
       <width>93</width>
       <height>28</height>
@@ -237,6 +222,108 @@
     </property>
     <property name="text">
      <string>A tool built by Sastra Students for Sastra Students</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="nextday">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>830</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Next Day</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="daybox">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>360</y>
+      <width>271</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="editable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="course_title_2">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>310</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Day</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>820</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Click ADD To add a particular class</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>820</y>
+      <width>221</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Click NEXT DAY to skip the day and go to the next day</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="save">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>830</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save</string>
     </property>
    </widget>
   </widget>
