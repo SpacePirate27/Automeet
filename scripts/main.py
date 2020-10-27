@@ -108,7 +108,7 @@ def calculate_seconds(cxtime,nxclass): #The function returns the difference betw
     final_time += seconds
     return final_time
 
-def mainrunner():
+def mainrunner(breakerflag):
     creds = initiate_credentials()
     current_time = datetime.datetime.now().time().strftime("%I:%M %p")
     next_class = get_next_class()
@@ -121,19 +121,23 @@ def mainrunner():
 
     while datetime.datetime.now() < next_calendar_check:
         #Display object . settext (waiting for class)
-        None
+        if breakerflag is False:
+            sys.exit()
+        
 
     class_link = cac.getthelink(next_class,creds) #this function should be in the calendaraccess.py file and should return either the link of the google meet or none
 
     while datetime.datetime.now() < next_classroom_check:
-        None
+        if breakerflag is False:
+            sys.exit()
 
     if class_link == None:
         class_link = ma.get_the_link(next_class,creds)
 
-    print('\n\n','Class Link is ',class_link)
+    print('\n\n','Class Link is ',breakerflag)
 
-    wph.web_page_opener(class_link) #this function should be present in the webpagehandler python file and should accept the link and open it in the current profile, NOTE: webpageopener function will also close the webpage upon the class getting over
+    if breakerflag is True:
+        wph.web_page_opener(class_link) #this function should be present in the webpagehandler python file and should accept the link and open it in the current profile, NOTE: webpageopener function will also close the webpage upon the class getting over
 
 
 
