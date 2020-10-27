@@ -1,5 +1,7 @@
-from os import path
+from os import path, removedirs
 from os.path import isfile
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QPushButton, QWidget
 
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
@@ -13,6 +15,13 @@ import time
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+
+from PyQt5 import QtWidgets, uic
+from PyQt5 import QtGui
+import sys
+import webbrowser
+
+import threading
 
 times=['08:45 AM','09:45 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:15 PM','04:15 PM']
 days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
@@ -105,106 +114,110 @@ def get_cal_list(creds_usr):
         cal_list.append(calendar_list_entry['summary'])
     return cal_list
 
-def tt_runner():
 
-    os.chdir(os.getcwd().split('\\scripts')[0])
-    if not os.path.isdir('timetables'):
-        os.makedirs('timetables')
-    if not os.path.isdir('user_mail_creds'):
-        os.makedirs('user_mail_creds')
-        
-    courses = []
-    if os.path.isfile(os.getcwd()+'\\timetables\\'+'courses'+'.pkl') is True:
-        inp_course = open(os.getcwd()+'\\timetables\\'+'courses'+'.pkl',"rb")
-        courses = pickle.load(inp_course)
-        inp_course.close()
-    
-    tempcreds = initiate_credentials()
-    cseslist = get_courses_list(tempcreds)
-    callist = get_cal_list(tempcreds)
-    #print('\n\n\n',cseslist,'\n\n\n')
-    clcourse = {}
-    if os.path.isfile(os.getcwd()+'\\timetables\\'+'course_classroom'+'.pkl') is True:
-        classroom_file_obj = open(os.getcwd()+'\\timetables\\'+'course_classroom'+'.pkl',"rb")
-        clcourse = pickle.load(classroom_file_obj)
-        classroom_file_obj.close()
-    calinfo = {}
-    if os.path.isfile(os.getcwd()+'\\timetables\\'+'course_calendar'+'.pkl') is True:
-        calendar_file_obj = open(os.getcwd()+'\\timetables\\'+'course_calendar'+'.pkl',"rb")
-        calinfo = pickle.load(calendar_file_obj)
-        calendar_file_obj.close()
 
-    for i in days:
-        dir = os.getcwd()+'\\timetables\\'+i+'.pkl'
-        if os.path.isfile(dir) is False:
-            print('\n\n')
-            print('Enter the timetable for '+i)
-            print('If there are no courses for the day, type \'nill\' as course code')
-            temp = []
-            flag = 'y'
-            while(flag == 'y'):
-                cc = None
-                tim = None
-                try:
-                    print('\n\n')
-                    cc = prompt('Enter the course code: ',completer=WordCompleter(courses))
-                    if cc == 'nill':
-                        temp = []
-                        break
-                    if cc not in courses:
-                        courses.append(cc)
-                        cl_link = prompt('Pick the google classroom link from the dropdown: ',completer=WordCompleter(cseslist))
-                        clcourse[cc] = cl_link
-                        #cal_name = prompt('Pick the name of the calendar from the dropdown: ',completer=WordCompleter(callist))
-                        #calinfo[cc] = cal_name
-                except:
-                    print('error')
-                try:
-                    tim = prompt('Enter the time: ',completer=WordCompleter(times))
-                except:
-                    print('Error occured')
-                temp.append((cc,tim))
-                flag = input('Do you want to add another course? (y/n)')
-            final_tt = []
-            if len(temp) != 0:
-                final_tt = sort_the_timetable(temp)
-            
-            #attempting to save
-            print('Saving',i,'\b'+'s timetable')
-            try:
-                file_object = open(dir,'wb')
-                pickle.dump(final_tt,file_object)
-                file_object.close()
-                print('Successfully saved '+i)
-            except:
-                print('Failed to save')
-    
-    #saving courses
-    dirc = os.getcwd()+'\\timetables\\'+'courses'+'.pkl'
-    if courses is not []:    
-        file_object = open(dirc,'wb')
-        pickle.dump(courses,file_object)
+class ttadder(QtWidgets.QMainWindow):
+
+    def __init__(self):
+        super(ttadder,self).__init__()
+        uic.loadUi(os.getcwd()+'\\gui_uis\\timetable.ui',self)
+
+        self.dayname = self.findChild(QtWidgets.QLabel,'dayname')
+        self.coursebox = self.findChild(QtWidgets.QComboBox, 'coursebox')
+        self.timebox = self.findChild(QtWidgets.QComboBox, 'timebox')
+        self.classroombox = self.findChild(QtWidgets.QComboBox, 'classroombox')
+
+        self.timebox.addItems(times)
+
+        self.addbutton = self.findChild(QtWidgets.QPushButton,'addbutton')
+        self.nextdaybutton = self.findChild(QtWidgets.QPushButton,'nextday')
+        self.savebutton = self.findChild(QtWidgets.QPushButton,'save')
+        self.savebutton.clicked.connect(self.save_day)
+        self.daybox = self.findChild(QtWidgets.QComboBox,'daybox')
+
+        self.addbutton.clicked.connect(self.add_days_timetable)
+        self.nextdaybutton.clicked.connect(self.go_next_day)
+
+        self.tempcreds = initiate_credentials()
+
+        self.cseslist = get_courses_list(self.tempcreds)
+
+        self.classroombox.addItems(self.cseslist)
+
+        self.daycounter = 0
+
+        self.courses = []
+        self.clcourse = {}
+        self.onedaytt = []
+        self.final_tt = []
+
+        daybodthreader = threading.Thread(target=self.redodays,daemon=True).start()
+        self.tt_runner()
+
+    def save_day(self):
+        dir = os.getcwd()+'\\timetables\\'+self.daybox.currentText()+'.pkl'
+        file_object = open(dir,'wb')
+        pickle.dump(self.final_tt,file_object)
         file_object.close()
-    #saving classroom info
-    dirc = os.getcwd()+'\\timetables\\'+'course_classroom'+'.pkl'
-    if len(clcourse.keys()) != 0:
-        classrooom_info_obj = open(dirc,'wb')
-        pickle.dump(clcourse,classrooom_info_obj)
-        classrooom_info_obj.close()
-    #saving calendar info
-    dirc = os.getcwd()+'\\timetables\\'+'course_calendar'+'.pkl'
-    if len(calinfo.keys()) != 0:
-        calendar_info_obj = open(dirc,'wb')
-        pickle.dump(calinfo,calendar_info_obj)
-        calendar_info_obj.close()
+        #saving courses
+        dirc = os.getcwd()+'\\timetables\\'+'courses'+'.pkl'
+        if self.courses is not []:    
+            file_object = open(dirc,'wb')
+            pickle.dump(self.courses,file_object)
+            file_object.close()
+        #saving classroom info
+        dirc = os.getcwd()+'\\timetables\\'+'course_classroom'+'.pkl'
+        if len(self.clcourse.keys()) != 0:
+            classrooom_info_obj = open(dirc,'wb')
+            pickle.dump(self.clcourse,classrooom_info_obj)
+            classrooom_info_obj.close()
+
+    def redodays(self):
+        while(1):
+            for i in days:
+                if os.path.isfile(os.getcwd()+'\\timetables\\'+i+'.pkl') is False and self.daybox.findText(i) == -1:
+                    self.daybox.addItem(i)
+
+    def add_days_timetable(self):
+        if self.coursebox.currentText() not in self.courses:
+            self.courses.append(self.coursebox.currentText())
+            self.clcourse[self.coursebox.currentText()] = self.classroombox.currentText()
+        self.onedaytt.append((self.coursebox.currentText(),self.timebox.currentText()))
+        
+    def go_next_day(self):   
+        if self.onedaytt != []:
+            self.final_tt = sort_the_timetable(self.onedaytt)
+        self.save_day()
+        self.daybox.removeItem(self.daybox.findText(self.daybox.currentText()))
+        
+
+    def tt_runner(self):
+
+        os.chdir(os.getcwd().split('\\scripts')[0])
+        if not os.path.isdir('timetables'):
+            os.makedirs('timetables')
+            
+        if os.path.isfile(os.getcwd()+'\\timetables\\'+'courses'+'.pkl') is True:
+            inp_course = open(os.getcwd()+'\\timetables\\'+'courses'+'.pkl',"rb")
+            self.courses = pickle.load(inp_course)
+            inp_course.close()
+            self.coursebox.addItems(self.courses)
+        
+        if os.path.isfile(os.getcwd()+'\\timetables\\'+'course_classroom'+'.pkl') is True:
+            classroom_file_obj = open(os.getcwd()+'\\timetables\\'+'course_classroom'+'.pkl',"rb")
+            self.clcourse = pickle.load(classroom_file_obj)
+            classroom_file_obj.close()
+
+
+
+def __main__():
+    ttapp = QtWidgets.QApplication(sys.argv)
+    window = ttadder()
+    window.show()
+    am = ttapp.exec_()
 
         
-    #webdri_dir=os.getcwd()+'\\web_drivers\\myprofile'
-
-    #if os.path.isdir(webdri_dir) is False:
-    #    profile_creator()
-
-    return tempcreds
+        
         
     
 
