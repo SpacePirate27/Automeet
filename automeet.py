@@ -138,6 +138,9 @@ class mainpage(QtWidgets.QMainWindow):
 
     def stopbuttonfunction(self):
         self.mainfunflag = False
+        self.stbutton.setEnabled(True)
+        self.stopbutton.setEnabled(False)
+        self.nxtclass.setText('Next Class is')
 
     def verified_checker(self):
         while(self.startbuttonchecker is False):
@@ -206,7 +209,8 @@ class mainpage(QtWidgets.QMainWindow):
             checker[5] = 0
 
     def ttfixer(self):
-        window2.show()
+        if timetables_creation() is False:
+            window2.show()
         self.ttbuttoner()
           
     def credfixer(self):
@@ -220,7 +224,8 @@ class mainpage(QtWidgets.QMainWindow):
 
 
     def profilefixer(self):
-        self.profthread = threading.Thread(target=profile_creator,daemon=True).start()
+        if chrome_profile is False:
+            self.profthread = threading.Thread(target=profile_creator,daemon=True).start()
         self.profbuttoner()
 
 
@@ -232,22 +237,25 @@ class mainpage(QtWidgets.QMainWindow):
         webbrowser.open('https://github.com/RamNarayan27/Automeet/tree/master')
         self.classbuttoner()
     
-    def mainfunrunner(self):
+    def mainfunrunner(self,breakerflag):
         while(self.mainfunflag is True):
             nxt_class = get_next_class()
             self.nxtclass.setText('Next Class is '+ nxt_class[0][0] + ' at ' + nxt_class[0][1])
-            mainrunner()
+            mainrunner(breakerflag)
 
     def startbutton(self):
         self.startbuttonchecker = True
         self.stopbutton.setEnabled(True)
         self.mainfunflag = True
+        while self.stbutton.isEnabled is True:
+            self.stbutton.setEnabled(False) 
         with open('log.txt','w') as log:
             try:
-                mainthread = threading.Thread(target=self.mainfunrunner,daemon=True).start()
+                mainthread = threading.Thread(target=self.mainfunrunner,daemon=True,args=[self.mainfunflag]).start()
             except:
                 traceback.print_exc(file=log)
                 print('Errors have been written to a log file')
+        self.stbutton.setEnabled(False)
 
     def time_updater(self):
         while self.startbuttonflag is False:
