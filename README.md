@@ -29,13 +29,13 @@
 
 * If u get a warning that the app isnt verified, click on `SHOW ADVANCED` and click on `Go to Quickstart` and Allow the requested permissions
 
-* If the browser opens a second time, login with your sastra id 
+* Make sure all the prerun options are ticked, else click on fix
 
-* On the first run of the program, you need to enter the timetable with each course and timing, while entering if you receive an error in the program, just hit enter and continue entering the timetable ( yet to fix )
+* While entering the timetable, click add to add one class, click on save to save the class and click on next day to go to the next day
 
-* Hit `tab` to get a dropdown while entering the time or the classroom/calendar information
+* Chrome needs to be installed to use the program, support for other browsers will be added later
 
-* Once you finish setting up, the program should run on its own and be able to attend classes
+* Once you finish setting up, the program should run on its own and be able to attend classes, if u have any issues, send an email to 'projectautomeet@gmail.com' and attach log.txt 
 
 ## To run python program
 
