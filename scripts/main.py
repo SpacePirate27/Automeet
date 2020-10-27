@@ -15,7 +15,7 @@ import datetime
 import pickle
 import os
 from pickle import FALSE
-from scripts.timetable import tt_runner
+from scripts.timetable import initiate_credentials
 import scripts.webPageHandler as wph
 import scripts.classroomaccess as ma
 import scripts.calendaraccess as cac
@@ -56,20 +56,37 @@ def compare_times(timeone,timetwo): #the function return 0 if timeone is greater
             return 1
 
     
-
-def get_next_class(ctime,todlist,x,tomlist,y,dayafterlist,z): #The function obtains the next class time and day
-
-    
+def get_next_class(): #The function obtains the next class time and day
     #print(todlist)
-    
-    for i in todlist:
+    today = days[datetime.date.today().weekday()] #days gets the value(string) of the current day
+    tom = datetime.date.today() + datetime.timedelta(days=1)
+    datom = datetime.date.today() + datetime.timedelta(days=2)
+    tomorrow = days[tom.weekday()]
+    dayaftertom = days[datom.weekday()]
+
+    file_handler = open(os.getcwd()+'\\timetables\\'+today+'.pkl',"rb")
+    today_classes_list = pickle.load(file_handler)
+    file_handler.close()
+
+    file_handler = open(os.getcwd()+'\\timetables\\'+tomorrow+'.pkl',"rb")
+    tomorrow_classes_list = pickle.load(file_handler)
+    file_handler.close()
+
+    file_handler = open(os.getcwd()+'\\timetables\\'+dayaftertom+'.pkl',"rb")
+    dayafter_classes_list = pickle.load(file_handler)
+    file_handler.close()
+
+    current_time = datetime.datetime.now().time().strftime("%I:%M %p")
+
+
+    for i in today_classes_list:
         #print(i)
-        if compare_times(ctime,i[1]) == 1:
+        if compare_times(current_time,i[1]) == 1:
             return [i,0]
-    if len(tomlist) != 0:
-        return [tomlist[0],1]
+    if len(tomorrow_classes_list) != 0:
+        return [tomorrow_classes_list[0],1]
     else:
-        return [dayafterlist[0],2]
+        return [dayafter_classes_list[0],2]
 
 
 
@@ -92,54 +109,31 @@ def calculate_seconds(cxtime,nxclass): #The function returns the difference betw
     return final_time
 
 def mainrunner():
+    creds = initiate_credentials()
+    current_time = datetime.datetime.now().time().strftime("%I:%M %p")
+    next_class = get_next_class()
+    remaining_time = calculate_seconds(current_time,next_class)
 
-    while(1):
-        
-        creds = tt_runner()
-        
-        today = days[datetime.date.today().weekday()] #days gets the value(string) of the current day
-        tom = datetime.date.today() + datetime.timedelta(days=1)
-        datom = datetime.date.today() + datetime.timedelta(days=2)
-        tomorrow = days[tom.weekday()]
-        dayaftertom = days[datom.weekday()]
+    print('Next Class',next_class[0][0], 'is at', next_class[0][1], 'and starts in', int(remaining_time)//60,'minutes')
 
-        file_handler = open(os.getcwd()+'\\timetables\\'+today+'.pkl',"rb")
-        today_classes_list = pickle.load(file_handler)
-        file_handler.close()
+    next_calendar_check = datetime.datetime.now() + datetime.timedelta(seconds=remaining_time-300) #sleeps the program until 5 min before before the upcoming class
+    next_classroom_check = datetime.datetime.now() + datetime.timedelta(seconds=remaining_time+180)
 
-        file_handler = open(os.getcwd()+'\\timetables\\'+tomorrow+'.pkl',"rb")
-        tomorrow_classes_list = pickle.load(file_handler)
-        file_handler.close()
+    while datetime.datetime.now() < next_calendar_check:
+        #Display object . settext (waiting for class)
+        None
 
-        file_handler = open(os.getcwd()+'\\timetables\\'+dayaftertom+'.pkl',"rb")
-        dayafter_classes_list = pickle.load(file_handler)
-        file_handler.close()
+    class_link = cac.getthelink(next_class,creds) #this function should be in the calendaraccess.py file and should return either the link of the google meet or none
 
-        current_time = datetime.datetime.now().time().strftime("%I:%M %p")
-        next_class = get_next_class(current_time,today_classes_list,today,tomorrow_classes_list,tomorrow,dayafter_classes_list,dayaftertom)
-        remaining_time = calculate_seconds(current_time,next_class)
+    while datetime.datetime.now() < next_classroom_check:
+        None
 
-        print('Next Class',next_class[0][0], 'is at', next_class[0][1], 'and starts in', int(remaining_time)//60,'minutes')
+    if class_link == None:
+        class_link = ma.get_the_link(next_class,creds)
 
-        next_calendar_check = datetime.datetime.now() + datetime.timedelta(seconds=remaining_time-300) #sleeps the program until 5 min before before the upcoming class
-        next_classroom_check = datetime.datetime.now() + datetime.timedelta(seconds=remaining_time+180)
+    print('\n\n','Class Link is ',class_link)
 
-        while datetime.datetime.now() < next_calendar_check:
-            print('Waiting for Class')
-            #Display object . settext (waiting for class)
-            time.sleep(30) 
-
-        class_link = cac.getthelink(next_class,creds) #this function should be in the calendaraccess.py file and should return either the link of the google meet or none
-
-        while datetime.datetime.now() < next_classroom_check:
-            time.sleep(30)
-
-        if class_link == None:
-            class_link = ma.get_the_link(next_class,creds)
-
-        print('\n\n','Class Link is ',class_link)
-
-        wph.web_page_opener(class_link) #this function should be present in the webpagehandler python file and should accept the link and open it in the current profile, NOTE: webpageopener function will also close the webpage upon the class getting over
+    wph.web_page_opener(class_link) #this function should be present in the webpagehandler python file and should accept the link and open it in the current profile, NOTE: webpageopener function will also close the webpage upon the class getting over
 
 
 
