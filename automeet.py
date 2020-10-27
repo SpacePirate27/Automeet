@@ -1,5 +1,7 @@
 from datetime import datetime
 from threading import Event
+from xml.etree.ElementTree import TreeBuilder
+from PyQt5.QtCore import QThread
 
 from selenium.webdriver.chrome.options import Options
 from scripts.main import mainrunner
@@ -8,7 +10,11 @@ import os.path
 from selenium import webdriver
 from scripts.timetable import initiate_credentials
 from googleapiclient.discovery import build
-from scripts.timetable import tt_runner,profile_creator
+from scripts.timetable import profile_creator
+from scripts.timetable import ttadder
+from scripts.main import get_next_class
+from scripts.timetable import __main__
+
 
 from PyQt5 import QtWidgets, uic
 from PyQt5 import QtGui
@@ -81,9 +87,10 @@ class mainpage(QtWidgets.QMainWindow):
         self.currtime = self.findChild(QtWidgets.QLabel,'currtime')
         self.nxtclass = self.findChild(QtWidgets.QLabel,'nxtclass')
         self.stbutton = self.findChild(QtWidgets.QPushButton,'start')
-        self.stbutton.clicked.connect(self.startbutton)
+        self.stbutton.clicked.connect(self.startbutton)     
         self.stopbutton = self.findChild(QtWidgets.QPushButton,'stop')
-        
+        self.stopbutton.clicked.connect(self.stopbuttonfunction)
+
         self.ttcross = self.findChild(QtWidgets.QLabel,'tt_cross')
         self.tttick = self.findChild(QtWidgets.QLabel,'tt_tick')
         self.ttfix = self.findChild(QtWidgets.QPushButton,'tt_fix')
@@ -109,7 +116,9 @@ class mainpage(QtWidgets.QMainWindow):
         self.classfix = self.findChild(QtWidgets.QPushButton,'class_fix')
         self.classfix.clicked.connect(self.classfixer)
         self.startbuttonflag = False
-        self.show()
+        self.startbuttonchecker = False
+        self.mainfunflag = True
+    
 
         self.credbuttoner()
         self.calbuttoner()
@@ -118,6 +127,8 @@ class mainpage(QtWidgets.QMainWindow):
         self.profbuttoner()
         self.classbuttoner()
 
+        self.mainthread = threading.Thread()
+
 
         self.timedisplay = threading.Thread(target=self.time_updater,daemon=True)
         self.timedisplay.start()
@@ -125,8 +136,11 @@ class mainpage(QtWidgets.QMainWindow):
         self.starterThread = threading.Thread(target=self.verified_checker,daemon=True).start()
 
 
+    def stopbuttonfunction(self):
+        self.mainfunflag = False
+
     def verified_checker(self):
-        while(1):
+        while(self.startbuttonchecker is False):
             if all_verified():
                 self.stbutton.setEnabled(True)
 
@@ -191,13 +205,10 @@ class mainpage(QtWidgets.QMainWindow):
             self.classtick.hide()
             checker[5] = 0
 
-
-    
     def ttfixer(self):
-        self.ttthread = threading.Thread(target=tt_runner,daemon=True).start()
+        window2.show()
         self.ttbuttoner()
-        
-        
+          
     def credfixer(self):
         webbrowser.open('https://github.com/RamNarayan27/Automeet/tree/master')
         self.credbuttoner()
@@ -220,17 +231,24 @@ class mainpage(QtWidgets.QMainWindow):
     def classfixer(self):
         webbrowser.open('https://github.com/RamNarayan27/Automeet/tree/master')
         self.classbuttoner()
+    
+    def mainfunrunner(self):
+        while(self.mainfunflag is True):
+            nxt_class = get_next_class()
+            self.nxtclass.setText('Next Class is '+ nxt_class[0][0] + ' at ' + nxt_class[0][1])
+            mainrunner()
 
     def startbutton(self):
-        print()
-        #with open('log.txt','w') as log:
-        #    try:
-        #        mainrunner()
-        #    except:
-        #        traceback.print_exc(file=log)
-        #        print('Errors have been written to a log file')
+        self.startbuttonchecker = True
+        self.stopbutton.setEnabled(True)
+        self.mainfunflag = True
+        with open('log.txt','w') as log:
+            try:
+                mainthread = threading.Thread(target=self.mainfunrunner,daemon=True).start()
+            except:
+                traceback.print_exc(file=log)
+                print('Errors have been written to a log file')
 
-    
     def time_updater(self):
         while self.startbuttonflag is False:
             currtentime = datetime.now().replace(microsecond=0).time()
@@ -239,16 +257,15 @@ class mainpage(QtWidgets.QMainWindow):
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         self.startbuttonflag = True
         a0.accept()
-
-
-        
+ 
 
 if __name__ == "__main__":
-    
     app = QtWidgets.QApplication(sys.argv)
     window = mainpage()
+    window2 = ttadder()
+    window.show()
     am = app.exec_()
-    sys.exit(am)
+
     
     
    
